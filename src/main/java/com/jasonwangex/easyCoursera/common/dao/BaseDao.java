@@ -1,11 +1,10 @@
-package com.jasonwangex.easyCoursera.dao;
+package com.jasonwangex.easyCoursera.common.dao;
 
-import com.jasonwangex.easyCoursera.domain.BaseDomain;
+import com.jasonwangex.easyCoursera.common.domain.BaseDomain;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 /**

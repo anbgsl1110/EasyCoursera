@@ -1,6 +1,7 @@
-package com.jasonwangex.easyCoursera.dao;
+package com.jasonwangex.easyCoursera.account.dao;
 
-import com.jasonwangex.easyCoursera.domain.User;
+import com.jasonwangex.easyCoursera.common.dao.BaseDaoImpl;
+import com.jasonwangex.easyCoursera.account.domain.User;
 import org.springframework.stereotype.Repository;
 
 

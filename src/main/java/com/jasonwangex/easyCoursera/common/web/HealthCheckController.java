@@ -1,6 +1,6 @@
-package com.jasonwangex.easyCoursera.web;
+package com.jasonwangex.easyCoursera.common.web;
 
-import com.jasonwangex.easyCoursera.dao.UserDao;
+import com.jasonwangex.easyCoursera.account.dao.UserDao;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  */
 @RequestMapping("/healthcheck")
 @RestController
-public class TestController {
+public class HealthCheckController {
     @Resource
     private UserDao userDao;
 

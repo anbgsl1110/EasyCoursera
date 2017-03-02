@@ -1,6 +1,6 @@
-package com.jasonwangex.easyCoursera.dao;
+package com.jasonwangex.easyCoursera.common.dao;
 
-import com.jasonwangex.easyCoursera.domain.BaseDomain;
+import com.jasonwangex.easyCoursera.common.domain.BaseDomain;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Criterion;

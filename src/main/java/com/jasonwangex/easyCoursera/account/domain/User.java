@@ -1,4 +1,6 @@
-package com.jasonwangex.easyCoursera.domain;
+package com.jasonwangex.easyCoursera.account.domain;
+
+import com.jasonwangex.easyCoursera.common.domain.BaseDomain;
 
 import javax.persistence.*;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.jasonwangex.easyCoursera.domain;
+package com.jasonwangex.easyCoursera.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
