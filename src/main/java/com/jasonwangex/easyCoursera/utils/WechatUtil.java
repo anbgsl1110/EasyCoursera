@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Created by wangjz
@@ -32,14 +33,13 @@ public class WechatUtil {
     }
 
     public static String sign(Map<String, String> params) {
-        TreeMap<String, String> treeMap = new TreeMap<>();
+        TreeSet<String> treeSet = new TreeSet<>();
 
-        params.forEach(treeMap::put);
+        params.forEach((key, value) -> treeSet.add(value));
 
-        StringBuilder signSb = new StringBuilder();
-        treeMap.forEach((key, value) -> signSb.append(key).append("=").append(value).append("&"));
-        if (signSb.length() > 0) signSb.deleteCharAt(signSb.length() - 1);
+        StringBuilder stringBuilder = new StringBuilder();
 
-        return SecurityUtil.SHA1(signSb.toString());
+        treeSet.forEach(stringBuilder::append);
+        return SecurityUtil.SHA1(stringBuilder.toString());
     }
 }
