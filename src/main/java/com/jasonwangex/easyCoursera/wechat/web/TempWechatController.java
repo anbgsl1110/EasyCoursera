@@ -1,6 +1,7 @@
 package com.jasonwangex.easyCoursera.wechat.web;
 
 import com.jasonwangex.easyCoursera.utils.WechatUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/")
 public class TempWechatController {
+    @Value("weixin.token")
+    private String token;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String check(@RequestParam(value = "signature", defaultValue = "") String signature,
                         @RequestParam(value = "timestamp", defaultValue = "0") long timestamp,
@@ -26,7 +30,7 @@ public class TempWechatController {
 
         params.put("timestamp", String.valueOf(timestamp));
         params.put("nonce", nonce);
-        params.put("echostr", echostr);
+        params.put("token", token);
 
         if (signature.equals(WechatUtil.sign(params))) return echostr;
 
