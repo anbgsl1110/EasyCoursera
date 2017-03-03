@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,7 +32,8 @@ public class JsonUtil {
             stringBuilder.append("&").append(key);
             String valueStr = null;
             try {
-                valueStr = OBJECT_MAPPER.writeValueAsString(value);
+                if (value instanceof String) valueStr = (String) value;
+                else valueStr = OBJECT_MAPPER.writeValueAsString(value);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -40,14 +42,14 @@ public class JsonUtil {
             stringBuilder.append("=")
                     .append(valueStr);
         });
-        if (stringBuilder.length() > 0) stringBuilder.deleteCharAt(0);
+        if (stringBuilder.length() > 0) stringBuilder.deleteCharAt(0).replace(0, 0, "?");
         return stringBuilder.toString();
     }
 
     public static <T> T toObject(Class<T> tClass, String value){
         try {
             return OBJECT_MAPPER.readValue(value, tClass);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

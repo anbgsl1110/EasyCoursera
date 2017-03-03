@@ -7,15 +7,6 @@
 
     <context:component-scan base-package="com.jasonwangex.easyCoursera.**.web"/>
 
-    <bean id="configBeanWeb" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:jdbc.properties</value>
-                <value>file:///var/ec/config.properties</value>
-            </list>
-        </property>
-    </bean>
-
     <mvc:annotation-driven />
     <mvc:default-servlet-handler />
 

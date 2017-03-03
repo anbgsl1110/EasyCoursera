@@ -5,7 +5,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.jasonwangex.easyCoursera"/>
+    <context:component-scan base-package="com.jasonwangex.easyCoursera.**"/>
     <context:annotation-config/>
+
+    <bean id="configBeanAll" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+                <value>file:///var/ec/config.properties</value>
+            </list>
+        </property>
+    </bean>
 
 </beans>
