@@ -1,13 +1,11 @@
 package com.jasonwangex.easyCoursera.utils;
 
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 /**
  * Created by wangjz

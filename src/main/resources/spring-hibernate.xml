@@ -53,7 +53,7 @@
 
         <property name="packagesToScan">
             <list>
-                <value>com.jasonwangex.easyCoursera.account.domain</value>
+                <value>com.jasonwangex.easyCoursera.*.domain</value>
             </list>
         </property>
 

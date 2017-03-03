@@ -1,7 +1,8 @@
-package com.jasonwangex.easyCoursera.wechat;
+package com.jasonwangex.easyCoursera.wechat.web;
 
 import com.jasonwangex.easyCoursera.utils.WechatUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,10 +13,11 @@ import java.util.Map;
  * Created by wangjz
  * on 17/3/2.
  */
+@Deprecated
 @RestController
-@RequestMapping("")
+@RequestMapping("/")
 public class TempWechatController {
-    @RequestMapping("")
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String check(@RequestParam(value = "signature", defaultValue = "") String signature,
                         @RequestParam(value = "timestamp", defaultValue = "0") long timestamp,
                         @RequestParam(value = "nonce", defaultValue = "") String nonce,
