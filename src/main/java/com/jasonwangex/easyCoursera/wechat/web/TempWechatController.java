@@ -31,7 +31,7 @@ public class TempWechatController {
         params.put("nonce", nonce);
         params.put("token", token);
 
-        if (signature.equals(WechatUtil.sign(params))) return echostr;
+        if (signature.toLowerCase().equals(WechatUtil.sign(params))) return echostr;
 
         return null;
     }
