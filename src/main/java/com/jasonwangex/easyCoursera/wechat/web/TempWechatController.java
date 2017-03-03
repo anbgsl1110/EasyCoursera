@@ -14,11 +14,10 @@ import java.util.Map;
  * Created by wangjz
  * on 17/3/2.
  */
-@Deprecated
 @RestController
 @RequestMapping("/")
 public class TempWechatController {
-    @Value("weixin.token")
+    @Value("${weixin.token}")
     private String token;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
