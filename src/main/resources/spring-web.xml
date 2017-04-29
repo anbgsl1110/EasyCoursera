@@ -10,9 +10,12 @@
     <mvc:annotation-driven />
     <mvc:default-servlet-handler />
 
-    <!--<mvc:interceptors>-->
-        <!--<bean class="com.jasonwangex.easyCoursera"/>-->
-    <!--</mvc:interceptors>-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.jasonwangex.easyCoursera.auth.intercepter.EcAuthMethodInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">

@@ -5,10 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,7 +16,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,34 +46,43 @@ public class HttpUtil {
     }
 
 
-    public static Map get(String url, Map<String, Object> params) {
+    public static String get(String url, Map<String, Object> params) {
         HttpGet httpGet = new HttpGet(url + JsonUtil.toParams(params));
-
-        String response = connect(httpGet);
-        return JsonUtil.toObject(Map.class, response);
+        return connect(httpGet);
     }
 
-    public static Map post(String url, Map<String, Object> params) {
+    public static String post(String url, Map<String, Object> params) {
         HttpPost httpPost = new HttpPost(url);
+        build(httpPost, params);
+        return connect(httpPost);
+    }
 
+    public static String patch(String url, Map<String, Object> params) {
+        HttpPatch httpPatch = new HttpPatch(url);
+        build(httpPatch, params);
+        return connect(httpPatch);
+    }
+
+    public static String put(String url, Map<String, Object> params) {
+        HttpPut httpPut = new HttpPut(url);
+        build(httpPut, params);
+        return connect(httpPut);
+    }
+
+    public static String delete(String url, Map<String, Object> params) {
+        HttpDelete httpDelete = new HttpDelete(url + JsonUtil.toParams(params));
+        return connect(httpDelete);
+    }
+
+    private static void build(HttpEntityEnclosingRequestBase httpClient, Map<String, Object> params){
         List<NameValuePair> nvps = new ArrayList<>();
-        params.forEach((key, value) -> {
-            nvps.add(new BasicNameValuePair(key, JsonUtil.toString(value)));
-        });
+        params.forEach((key, value) -> nvps.add(new BasicNameValuePair(key, JsonUtil.toString(value))));
 
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+            httpClient.setEntity(new UrlEncodedFormEntity(nvps));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        String response = connect(httpPost);
-
-        return JsonUtil.toObject(Map.class, response);
-    }
-
-    public static void main(String[] args) {
-        Map map = get("https://www.baidu.com", new HashMap<>());
     }
 
 }

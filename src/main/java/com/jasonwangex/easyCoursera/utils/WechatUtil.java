@@ -51,7 +51,9 @@ public class WechatUtil {
         params.put("appid", appId);
         params.put("secret", appSignKey);
 
-        Map response = HttpUtil.get(webroot + "/cgi-bin/token", params);
+        String responseStr = HttpUtil.get(webroot + "/cgi-bin/token", params);
+
+        Map response = JsonUtil.toObject(Map.class, responseStr);
 
         if (response != null && response.containsKey("access_token")) {
             WechatClient.setAccessToken((String) response.get("access_token"));

@@ -1,7 +1,5 @@
 package com.jasonwangex.easyCoursera.common.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,12 +7,12 @@ import java.util.Map;
  * Created by wangjz
  * on 17/3/2.
  */
-public class ResponseJsonHolder {
+public class ECResponse {
     private Map<String, Object> data;
     private int error;
     private String message;
 
-    public ResponseJsonHolder() {
+    public ECResponse() {
         data = new HashMap<>();
         error = 0;
         message = "";
@@ -44,24 +42,24 @@ public class ResponseJsonHolder {
         this.message = message;
     }
 
-    public ResponseJsonHolder set(String key, Object value) {
+    public ECResponse set(String key, Object value) {
         data.put(key, value);
         return this;
     }
 
-    public static ResponseJsonHolder success(String message) {
-        ResponseJsonHolder responseData = new ResponseJsonHolder();
+    public static ECResponse success(String message) {
+        ECResponse responseData = new ECResponse();
         responseData.error = 0;
         responseData.message = message;
         return responseData;
     }
 
-    public static ResponseJsonHolder success() {
+    public static ECResponse success() {
         return success("success");
     }
 
-    public static ResponseJsonHolder fail(String message) {
-        ResponseJsonHolder responseData = new ResponseJsonHolder();
+    public static ECResponse fail(String message) {
+        ECResponse responseData = new ECResponse();
         responseData.error = 400;
         responseData.message = message;
         return responseData;

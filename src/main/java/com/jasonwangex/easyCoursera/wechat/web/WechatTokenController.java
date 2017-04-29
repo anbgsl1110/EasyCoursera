@@ -1,6 +1,6 @@
 package com.jasonwangex.easyCoursera.wechat.web;
 
-import com.jasonwangex.easyCoursera.common.bean.ResponseJsonHolder;
+import com.jasonwangex.easyCoursera.common.bean.ECResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WechatTokenController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseJsonHolder check(){
-        return ResponseJsonHolder.success();
+    public ECResponse check(){
+        return ECResponse.success();
     }
 }
