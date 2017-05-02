@@ -5,6 +5,8 @@ import com.jasonwangex.easyCoursera.auth.bean.EcSession;
 import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
 import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
 import com.jasonwangex.easyCoursera.common.web.BaseController;
+import com.jasonwangex.easyCoursera.utils.ServerUtil;
+import com.jasonwangex.easyCoursera.utils.WebUtil;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,7 +36,7 @@ public class EcAuthMethodInterceptor implements HandlerInterceptor {
                 if (session.hasRole(roleEnum)) return true;
             }
 
-            return false;
+            if (!session.isLogin()) response.sendRedirect(ServerUtil.getUrl("/login"));
         }
 
         Object controller = handlerMethod.getBean();
@@ -46,13 +48,11 @@ public class EcAuthMethodInterceptor implements HandlerInterceptor {
                 return false;
             }
 
-            if (!baseController.allow(request)){
-                response.sendError(403);
-                return false;
-            }
+            if (baseController.allow(request)) return true;
         }
 
-        return true;
+        response.sendError(403);
+        return false;
     }
 
     @Override

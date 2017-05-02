@@ -65,8 +65,4 @@ public final class SecurityUtil {
         return new BigInteger(1, messageDigest.digest()).toString(16);
     }
 
-    public static void main(String[] args) {
-
-    }
-
 }

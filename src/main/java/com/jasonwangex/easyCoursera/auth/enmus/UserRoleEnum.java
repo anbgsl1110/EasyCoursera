@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.auth.enmus;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by wangjz
@@ -27,7 +28,9 @@ public enum UserRoleEnum {
         this.roleId = roleId;
     }
 
-    public static boolean hasRole(List<Integer> roleIds, UserRoleEnum userRoleEnum) {
+    public static boolean hasRole(Set<Integer> roleIds, UserRoleEnum userRoleEnum) {
+        if (roleIds == null || userRoleEnum == null) return false;
+
         UserRoleEnum thisEnum = Arrays.stream(UserRoleEnum.values())
                 .filter(roleEnum -> roleIds.contains(userRoleEnum.getRoleId()))
                 .findFirst()

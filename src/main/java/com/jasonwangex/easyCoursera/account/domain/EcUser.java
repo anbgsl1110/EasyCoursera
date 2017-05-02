@@ -1,17 +1,23 @@
 package com.jasonwangex.easyCoursera.account.domain;
 
 import com.jasonwangex.easyCoursera.common.domain.BaseDomain;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.*;
 
 /**
  * Created by wangjz
  * on 17/2/23.
  */
 @Entity
+@DynamicInsert
 @Table(name = "ec_user")
-public class User extends BaseDomain {
+public class EcUser extends BaseDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -19,9 +25,31 @@ public class User extends BaseDomain {
     private String nickname;
     private String avatar;
     private int gender;
-    private int roleId;
     private String userIp;
     private Date lastLogin;
+    private Date activeTime;
+    private String roleIds;
+
+    public EcUser(){}
+
+    /**
+     * @param openid
+     * @param nickname
+     * @param avatar
+     * @param gender
+     * @param userIp
+     * @param lastLogin
+     */
+    public EcUser(String openid, String nickname, String avatar, int gender,
+                  String userIp, Date lastLogin) {
+        this.openid = openid;
+        this.nickname = nickname;
+        this.avatar = avatar;
+        this.gender = gender;
+        this.userIp = userIp;
+        this.lastLogin = lastLogin;
+    }
+
     private Date createTime;
     private Date modifyTime;
 
@@ -55,14 +83,6 @@ public class User extends BaseDomain {
 
     public void setGender(int gender) {
         this.gender = gender;
-    }
-
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
     }
 
     public String getUserIp() {
@@ -109,5 +129,26 @@ public class User extends BaseDomain {
     @Override
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getActiveTime() {
+        return activeTime;
+    }
+
+    public void setActiveTime(Date activeTime) {
+        this.activeTime = activeTime;
+    }
+
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    public Set<Integer> getRoleIds(){
+        String[] roleStrs = StringUtils.split(this.roleIds);
+        Set<Integer> roleSet = new HashSet<>();
+        for (String roleStr : roleStrs) {
+            roleSet.add(NumberUtils.toInt(roleStr, 0));
+        }
+        return roleSet;
     }
 }

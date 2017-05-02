@@ -3,7 +3,10 @@ package com.jasonwangex.easyCoursera.auth.bean;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by wangjz
@@ -11,10 +14,18 @@ import java.util.List;
  */
 public class EcSession {
     private int userId;
-    private List<Integer> roleIds;
+    private Set<Integer> roleIds;
     private long trace;
     private long timestamp;
     private String openId;
+    private String sign;
+    private String nonce;
+
+    public EcSession() {
+        // 所有人都有匿名身份
+        roleIds = new HashSet<>();
+        roleIds.add(0);
+    }
 
     public long getTrace() {
         return trace;
@@ -53,11 +64,11 @@ public class EcSession {
         return userId > 0;
     }
 
-    public List<Integer> getRoleIds() {
+    public Set<Integer> getRoleIds() {
         return roleIds;
     }
 
-    public void setRoleIds(List<Integer> roleIds) {
+    public void setRoleIds(Set<Integer> roleIds) {
         this.roleIds = roleIds;
     }
 
@@ -66,4 +77,19 @@ public class EcSession {
         return UserRoleEnum.hasRole(this.roleIds, userRoleEnum);
     }
 
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
 }

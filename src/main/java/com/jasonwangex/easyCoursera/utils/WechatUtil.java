@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -18,7 +17,8 @@ import java.util.TreeSet;
 public class WechatUtil {
     private static String appSignKey;
     private static String appId;
-    private static String webroot;
+    private static String host = "https://open.weixin.qq.com";
+    private static String apiHost = "https://api.weixin.qq.com";
 
     private static Map<String, String> packageSign(Map<String, String> params) {
 
@@ -51,13 +51,31 @@ public class WechatUtil {
         params.put("appid", appId);
         params.put("secret", appSignKey);
 
-        String responseStr = HttpUtil.get(webroot + "/cgi-bin/token", params);
+        String responseStr = HttpUtil.get(apiHost + "/cgi-bin/token", params);
 
         Map response = JsonUtil.toObject(Map.class, responseStr);
 
         if (response != null && response.containsKey("access_token")) {
             WechatClient.setAccessToken((String) response.get("access_token"));
         }
+    }
+
+    public static String getOAuthUrl(String url, String state) {
+        return host + "/connect/oauth2/authorize?appid=" + appId
+                + "&redirect_uri=" + WebUtil.encodeUrl(url)
+                + "&response_type=code&scope=snsapi_userinfo&state=" + state + "#wechat_redirect";
+    }
+
+    public static String getOAuthUrl(String url) {
+        return getOAuthUrl(url, "null");
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getApiHost(){
+        return apiHost;
     }
 
 
@@ -69,8 +87,13 @@ public class WechatUtil {
     public void setAppId(String appId) {
         WechatUtil.appId = appId;
     }
-    @Value("${weixin.webroot}")
-    public void setWebroot(String webroot) {
-        WechatUtil.webroot = webroot;
+
+    public static String getAppSignKey() {
+        return appSignKey;
     }
+
+    public static String getAppId() {
+        return appId;
+    }
+
 }

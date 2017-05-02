@@ -1,8 +1,10 @@
 package com.jasonwangex.easyCoursera.common.util;
 
+import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
 import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import com.jasonwangex.easyCoursera.utils.SecurityUtil;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,7 @@ public class EcSessionUtil {
 
     public static final String EC_SESSION = "EcSession";
     private static final String EC_COOKIE_NAME = "EC_COOKIE_DATA_";
-    private static final int EC_SESSION_LIFE = 3 * 3600;
+    private static final int EC_SESSION_LIFE = 3 * 3600;            // session 失效时间为 3 个小时
 
     public static void setSession(HttpServletRequest request, HttpServletResponse response, EcSession session) {
         String host = request.getServerName();
@@ -63,9 +65,19 @@ public class EcSessionUtil {
                 .orElse(new EcSession());
     }
 
-    public static String getSign(String password) throws Exception {
+    public static String getSign(String password) {
         String tempToken = SecurityUtil.SHA1(password);
         return SecurityUtil.SHA1(tempToken + EC_SESSION_SALT);
+    }
+
+    public static String getSign(EcSession ecSession) {
+        String sessionStr = ecSession.getOpenId()
+                + ecSession.getTimestamp()
+                + ecSession.getUserId()
+                + ecSession.getNonce()
+                + Arrays.toString(ecSession.getRoleIds().toArray());
+
+        return getSign(sessionStr);
     }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
@@ -79,6 +91,10 @@ public class EcSessionUtil {
                     cookie.setMaxAge(-1);
                     response.addCookie(cookie);
                 });
+    }
+
+    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response) {
+        deleteCookie(request, response, EC_COOKIE_NAME);
     }
 
 }

@@ -17,7 +17,7 @@ public class Base64Util {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return null;
+        return str;
     }
 
     public static String encodeUrl(String url) {
