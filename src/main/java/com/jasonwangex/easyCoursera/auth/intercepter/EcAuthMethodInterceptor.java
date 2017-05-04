@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EcAuthMethodInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (!(handler instanceof HandlerMethod)) return false;
+        if (!(handler instanceof HandlerMethod)) return true;
 
         EcSession session = EcSessionUtil.getSession(request);
         request.setAttribute(EcSessionUtil.EC_SESSION, session);
@@ -40,10 +40,10 @@ public class EcAuthMethodInterceptor implements HandlerInterceptor {
         }
 
         Object controller = handlerMethod.getBean();
-        if (controller instanceof BaseController){
+        if (controller instanceof BaseController) {
             final BaseController baseController = (BaseController) controller;
 
-            if (baseController.checkLogin() && !session.isLogin() ) {
+            if (baseController.checkLogin() && !session.isLogin()) {
                 response.sendRedirect("/login");
                 return false;
             }
@@ -51,8 +51,8 @@ public class EcAuthMethodInterceptor implements HandlerInterceptor {
             if (baseController.allow(request)) return true;
         }
 
-        response.sendError(403);
-        return false;
+//        response.sendError(403);
+        return true;
     }
 
     @Override

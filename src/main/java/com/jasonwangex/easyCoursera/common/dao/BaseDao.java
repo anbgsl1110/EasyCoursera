@@ -1,6 +1,6 @@
 package com.jasonwangex.easyCoursera.common.dao;
 
-import com.jasonwangex.easyCoursera.common.domain.BaseDomain;
+import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -12,7 +12,7 @@ import java.util.List;
  * Created by wangjz
  * on 17/2/24.
  */
-public interface BaseDao<T extends BaseDomain> {
+public interface BaseDao<T extends BaseEntity> {
 
     void setHibernateTemplate0(HibernateTemplate hibernateTemplate);
 

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BaseController {
 
     public boolean checkLogin() {
-        return false;
+        return true;
     }
 
     public boolean allow(HttpServletRequest request){

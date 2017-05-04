@@ -1,6 +1,6 @@
 package com.jasonwangex.easyCoursera.common.dao;
 
-import com.jasonwangex.easyCoursera.common.domain.BaseDomain;
+import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Criterion;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 @Component
 @Transactional
 @SuppressWarnings("unchecked")
-public class BaseDaoImpl<T extends BaseDomain> extends HibernateDaoSupport implements BaseDao<T> {
+public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport implements BaseDao<T> {
 
     @Autowired
     public void setHibernateTemplate0(HibernateTemplate hibernateTemplate) {

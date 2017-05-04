@@ -3,6 +3,7 @@ package com.jasonwangex.easyCoursera.auth.bean;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,13 +13,13 @@ import java.util.Set;
  * Created by wangjz
  * on 17/4/22.
  */
-public class EcSession {
+public class EcSession implements Serializable{
     private int userId;
     private Set<Integer> roleIds;
     private long trace;
     private long timestamp;
     private String openId;
-    private String sign;
+    private String sign = "测试中文";
     private String nonce;
 
     public EcSession() {

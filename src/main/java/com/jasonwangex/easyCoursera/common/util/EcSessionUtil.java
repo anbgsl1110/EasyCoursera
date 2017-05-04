@@ -4,6 +4,8 @@ import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
 import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import com.jasonwangex.easyCoursera.utils.SecurityUtil;
+import com.jasonwangex.easyCoursera.utils.ServerUtil;
+import com.jasonwangex.easyCoursera.utils.WebUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +31,7 @@ public class EcSessionUtil {
     private static final int EC_SESSION_LIFE = 3 * 3600;            // session 失效时间为 3 个小时
 
     public static void setSession(HttpServletRequest request, HttpServletResponse response, EcSession session) {
-        String host = request.getServerName();
+        String host = ServerUtil.getHost();
         if (session == null) return;
 
         try {
@@ -62,6 +64,7 @@ public class EcSessionUtil {
                 .map(Cookie::getValue)
                 .map(Base64Util::decodeUrl)
                 .map(value -> JsonUtil.toObject(EcSession.class, value))
+                .filter(ecSession -> ecSession.getTimestamp() + EC_SESSION_LIFE * 1000L > System.currentTimeMillis())
                 .orElse(new EcSession());
     }
 
@@ -82,13 +85,15 @@ public class EcSessionUtil {
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
         Cookie cookies[] = request.getCookies();
-        if (StringUtils.isEmpty(cookieName)) return;
+        if (cookies == null) return;
 
         Stream.of(cookies)
                 .filter(cookie -> cookieName.equals(cookie.getName()))
                 .forEach(cookie -> {
-                    cookie.setValue("");
-                    cookie.setMaxAge(-1);
+                    cookie = new Cookie(cookieName, null);
+                    cookie.setDomain(ServerUtil.getHost());
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
                     response.addCookie(cookie);
                 });
     }

@@ -1,5 +1,7 @@
 package com.jasonwangex.easyCoursera.common.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import java.util.Map;
  * Created by wangjz
  * on 17/3/2.
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ECResponse {
     private Map<String, Object> data;
     private int error;
@@ -34,6 +37,7 @@ public class ECResponse {
         this.error = error;
     }
 
+    @JsonInclude(content = JsonInclude.Include.NON_EMPTY)
     public String getMessage() {
         return message;
     }

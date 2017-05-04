@@ -18,7 +18,6 @@ public class HealthCheckController extends BaseController {
     @Resource
     private EcUserDao ecUserDao;
 
-    @NeedRole(UserRoleEnum.USER)
     @RequestMapping()
     public String healthCheck() {
         try {
@@ -27,5 +26,10 @@ public class HealthCheckController extends BaseController {
             return "error";
         }
         return "success";
+    }
+
+    @Override
+    public boolean checkLogin() {
+        return false;
     }
 }

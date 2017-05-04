@@ -2,13 +2,17 @@ package com.jasonwangex.easyCoursera.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by wangjz
  * on 17/2/24.
  */
-public class BaseDomain {
+public class BaseEntity implements Serializable{
     private Integer id;
 
     private Date createTime;

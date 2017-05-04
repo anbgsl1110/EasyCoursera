@@ -6,16 +6,14 @@ package com.jasonwangex.easyCoursera.utils;
  */
 public class ServerUtil {
 
-    public static final boolean LOCAL = System.getProperty("env.location", "prd").equals("local");
-    public static final boolean PRD = System.getProperty("env.location", "prd").equals("prd");
-    private static final String HOST_PRD = "http://ec.jasonwangex.com";
+    private static final String HOST = "ec.jasonwangex.com";
 
     public static String getWebRoot() {
-        if (PRD) return HOST_PRD;
+        return "http://" + HOST;
+    }
 
-        if (LOCAL) return "http://localhost:8081";
-
-        return null;
+    public static String getHost(){
+        return HOST;
     }
 
     public static String getUrl(String uri) {

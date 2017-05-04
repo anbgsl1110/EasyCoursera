@@ -1,4 +1,4 @@
-package com.jasonwangex.easyCoursera.common.web;
+package com.jasonwangex.easyCoursera.auth.web;
 
 import com.jasonwangex.easyCoursera.account.dao.EcUserDao;
 import com.jasonwangex.easyCoursera.account.domain.EcUser;
@@ -6,6 +6,8 @@ import com.jasonwangex.easyCoursera.account.service.EcUserService;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
 import com.jasonwangex.easyCoursera.common.bean.ECResponse;
 import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
+import com.jasonwangex.easyCoursera.common.web.BaseController;
+import com.jasonwangex.easyCoursera.utils.CacheUtil;
 import com.jasonwangex.easyCoursera.utils.ServerUtil;
 import com.jasonwangex.easyCoursera.utils.WebUtil;
 import com.jasonwangex.easyCoursera.utils.WechatUtil;
@@ -24,6 +26,7 @@ import weixin.popular.bean.user.User;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
  * Created by wangjz
@@ -41,10 +44,27 @@ public class LoginController extends BaseController {
     public String login(HttpServletRequest request,
                         HttpServletResponse response,
                         ModelMap modelMap,
-                        @RequestParam(value = "code", required = false) String code){
+                        @RequestParam(value = "redirect", required = false) String redirect,
+                        @RequestParam(value = "token", required = false) String token,
+                        @RequestParam(value = "code", required = false) String code) {
+
+        if (redirect == null) redirect = request.getAttribute("redirect") == null ?
+                ServerUtil.getWebRoot() + "/index" : (String) request.getAttribute("redirect");
+
+        EcSession ecSession = EcSessionUtil.getSession(request);
+        if (ecSession.isLogin()) {
+            CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
+            return "redirect:" + redirect;
+        }
+
         if (!WebUtil.isFromWechat(request)) {
-            WebUtil.error403(response);
-            return null;
+            token = UUID.randomUUID().toString();
+            modelMap.addAttribute("token", token);
+            modelMap.addAttribute("qrcodeContent", ServerUtil.getWebRoot() + "/login?token=" + token + "&redirect=" + redirect);
+            modelMap.addAttribute("redirectUrl", redirect);
+            modelMap.addAttribute("loginUrl", redirect);
+            CacheUtil.setCache("EC_LOGIN_" + token, new EcSession(), 5 * 60);
+            return "/common/login";
         }
 
         if (StringUtils.isEmpty(code)) {
@@ -65,42 +85,22 @@ public class LoginController extends BaseController {
                 return null;
             }
             ecUser = ecUserService.create(wechatUser, true, WebUtil.getIp(request));
-
-            EcSession ecSession = new EcSession();
-            ecSession.setUserId(ecUser.getId());
-            ecSession.setOpenId(ecUser.getOpenid());
-            ecSession.setTimestamp(System.currentTimeMillis());
-            ecSession.setNonce(RandomStringUtils.random(32, true, true));
-            ecSession.setSign(EcSessionUtil.getSign(ecSession));
-
-            EcSessionUtil.setSession(request, response, ecSession);
         }
 
-        return "common/index";
+        ecSession = new EcSession();
+        ecSession.setUserId(ecUser.getId());
+        ecSession.setOpenId(ecUser.getOpenid());
+        ecSession.setTimestamp(System.currentTimeMillis());
+        ecSession.setNonce(RandomStringUtils.random(32, true, true));
+        ecSession.setSign(EcSessionUtil.getSign(ecSession));
+
+        EcSessionUtil.setSession(request, response, ecSession);
+        CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
+        return "redirect:" + redirect;
     }
 
-    @RequestMapping(value = "/refresh/session", method = RequestMethod.POST)
-    public ECResponse refreshSession(HttpServletRequest request,
-                                     HttpServletResponse response) {
-        EcSession session = EcSessionUtil.getSession(request);
-        if (!session.isLogin()) return ECResponse.success();
-
-        EcUser ecUser = ecUserDao.getById(session.getUserId());
-        session.setOpenId(ecUser.getOpenid());
-        session.setRoleIds(ecUser.getRoleIds());
-        session.setSign(EcSessionUtil.getSign(session));
-
-        EcSessionUtil.setSession(request, response, session);
-
-        return ECResponse.success();
+    @Override
+    public boolean checkLogin() {
+        return false;
     }
-
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    @ResponseBody
-    public ECResponse logout(HttpServletRequest request,
-                                     HttpServletResponse response) {
-        EcSessionUtil.deleteCookie(request, response);
-        return ECResponse.success();
-    }
-
 }

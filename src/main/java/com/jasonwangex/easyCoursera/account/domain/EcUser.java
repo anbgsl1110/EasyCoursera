@@ -1,6 +1,6 @@
 package com.jasonwangex.easyCoursera.account.domain;
 
-import com.jasonwangex.easyCoursera.common.domain.BaseDomain;
+import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.annotations.*;
@@ -17,10 +17,11 @@ import java.util.*;
 @Entity
 @DynamicInsert
 @Table(name = "ec_user")
-public class EcUser extends BaseDomain {
+public class EcUser extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     private String openid;
     private String nickname;
     private String avatar;
@@ -29,6 +30,37 @@ public class EcUser extends BaseDomain {
     private Date lastLogin;
     private Date activeTime;
     private String roleIds;
+    private boolean subscribe;
+    private Date subscribeTime;
+
+    private Date createTime;
+    private Date modifyTime;
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isSubscribe() {
+        return subscribe;
+    }
+
+    public void setSubscribe(boolean subscribe) {
+        this.subscribe = subscribe;
+    }
+
+    public Date getSubscribeTime() {
+        return subscribeTime;
+    }
+
+    public void setSubscribeTime(Date subscribeTime) {
+        this.subscribeTime = subscribeTime;
+    }
 
     public EcUser(){}
 
@@ -49,9 +81,6 @@ public class EcUser extends BaseDomain {
         this.userIp = userIp;
         this.lastLogin = lastLogin;
     }
-
-    private Date createTime;
-    private Date modifyTime;
 
     public String getOpenid() {
         return openid;
@@ -121,16 +150,6 @@ public class EcUser extends BaseDomain {
         this.modifyTime = modifyTime;
     }
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Date getActiveTime() {
         return activeTime;
     }
@@ -151,4 +170,5 @@ public class EcUser extends BaseDomain {
         }
         return roleSet;
     }
+
 }
