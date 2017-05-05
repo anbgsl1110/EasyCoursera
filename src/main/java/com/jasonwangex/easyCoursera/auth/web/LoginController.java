@@ -42,26 +42,26 @@ public class LoginController extends BaseController {
     public String login(HttpServletRequest request,
                         HttpServletResponse response,
                         ModelMap modelMap,
-                        @RequestParam(value = "redirect", required = false) String redirect,
+                        @RequestParam(value = "redirect", required = false) String encodeRedirect,
                         @RequestParam(value = "token", required = false) String token,
                         @RequestParam(value = "code", required = false) String code) {
 
-        if (redirect == null) redirect = request.getAttribute("redirect") == null ?
+        if (encodeRedirect == null) encodeRedirect = request.getAttribute("redirect") == null ?
                 ServerUtil.getWebRoot() + "/index" : (String) request.getAttribute("redirect");
 
-        String decodeRedirect = WebUtil.decodeUrl(redirect);
+        String redirect = WebUtil.decodeUrl(encodeRedirect);
         EcSession ecSession = EcSessionUtil.getSession(request);
         if (ecSession.isLogin()) {
             CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
-            return "redirect:" + redirect;
+            return "forward:" + redirect;
         }
 
         if (!WebUtil.isFromWechat(request)) {
             token = UUID.randomUUID().toString();
             modelMap.addAttribute("token", token);
-            modelMap.addAttribute("qrcodeContent", ServerUtil.getWebRoot() + "/login?token=" + token + "&redirect=" + redirect);
-            modelMap.addAttribute("redirectUrl", decodeRedirect);
-            modelMap.addAttribute("loginUrl", redirect);
+            modelMap.addAttribute("qrcodeContent", ServerUtil.getWebRoot() + "/login?token=" + token + "&redirect=" + encodeRedirect);
+            modelMap.addAttribute("redirectUrl", redirect);
+            modelMap.addAttribute("loginUrl", encodeRedirect);
             CacheUtil.setCache("EC_LOGIN_" + token, new EcSession(), 5 * 60);
             return "/common/login";
         }
@@ -95,7 +95,7 @@ public class LoginController extends BaseController {
 
         EcSessionUtil.setSession(request, response, ecSession);
         CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
-        return "redirect:" + redirect;
+        return "redirect:" + ServerUtil.getUrl(redirect);
     }
 
     @Override
