@@ -1,6 +1,5 @@
-package com.jasonwangex.easyCoursera.account.web;
+package com.jasonwangex.easyCoursera.common.web;
 
-import com.jasonwangex.easyCoursera.common.web.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * on 17/5/4.
  */
 @Controller
-@RequestMapping("/index")
+@RequestMapping("")
 public class IndexController extends BaseController{
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String index(){
-        return "/common/index";
+    @RequestMapping(value = {"/index", ""}, method = RequestMethod.GET)
+    public String index() {
+        return "index/main";
     }
 
 }

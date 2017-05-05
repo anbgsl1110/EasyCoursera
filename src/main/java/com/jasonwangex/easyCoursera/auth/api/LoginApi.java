@@ -1,10 +1,11 @@
-package com.jasonwangex.easyCoursera.auth.web.api;
+package com.jasonwangex.easyCoursera.auth.api;
 
 import com.jasonwangex.easyCoursera.account.dao.EcUserDao;
 import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
 import com.jasonwangex.easyCoursera.common.bean.ECResponse;
 import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
+import com.jasonwangex.easyCoursera.common.web.BaseController;
 import com.jasonwangex.easyCoursera.utils.CacheUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,12 @@ import javax.servlet.http.HttpServletResponse;
  * on 17/5/4.
  */
 @RestController
-@RequestMapping("/login")
-public class LoginApi {
+@RequestMapping("/api/login")
+public class LoginApi extends BaseController {
     @Resource
     private EcUserDao ecUserDao;
 
     @RequestMapping(value = "/check", method = RequestMethod.GET)
-    @ResponseBody
     public ECResponse check(HttpServletRequest request,
                             HttpServletResponse response,
                             @RequestParam(value = "token", required = false) String token) {
@@ -47,7 +47,7 @@ public class LoginApi {
 
         EcUser ecUser = ecUserDao.getById(session.getUserId());
         session.setOpenId(ecUser.getOpenid());
-        session.setRoleIds(ecUser.getRoleIds());
+        session.setRoleIds(ecUser.getRoleIdSet());
         session.setSign(EcSessionUtil.getSign(session));
 
         EcSessionUtil.setSession(request, response, session);
@@ -55,5 +55,8 @@ public class LoginApi {
         return ECResponse.success();
     }
 
-
+    @Override
+    public boolean checkLogin() {
+        return false;
+    }
 }

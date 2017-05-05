@@ -1,5 +1,7 @@
 package com.jasonwangex.easyCoursera.common.web;
 
+import com.jasonwangex.easyCoursera.auth.bean.EcSession;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -12,7 +14,7 @@ public class BaseController {
         return true;
     }
 
-    public boolean allow(HttpServletRequest request){
+    public boolean allow(EcSession ecSession){
         return true;
     }
 }

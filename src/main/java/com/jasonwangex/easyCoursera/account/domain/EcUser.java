@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by wangjz
@@ -29,12 +30,18 @@ public class EcUser extends BaseEntity {
     private String userIp;
     private Date lastLogin;
     private Date activeTime;
+
+    @Column(updatable = false)
     private String roleIds;
     private boolean subscribe;
     private Date subscribeTime;
 
+    @Column(updatable = false)
     private Date createTime;
     private Date modifyTime;
+
+    @Transient
+    private Set<Integer> roleSet = new HashSet<>();
 
     @Override
     public Integer getId() {
@@ -160,15 +167,33 @@ public class EcUser extends BaseEntity {
 
     public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
-    }
-
-    public Set<Integer> getRoleIds(){
         String[] roleStrs = StringUtils.split(this.roleIds);
-        Set<Integer> roleSet = new HashSet<>();
         for (String roleStr : roleStrs) {
             roleSet.add(NumberUtils.toInt(roleStr, 0));
         }
+    }
+
+    public String getRoleIds() {
+        return roleIds;
+    }
+
+    public Set<Integer> getRoleIdSet(){
         return roleSet;
     }
 
+    public void addRoleId(int roleId) {
+        roleSet.add(roleId);
+        refreshRoleIds();
+    }
+
+    public void deleteRoleId(int roleId) {
+        roleSet.remove(roleId);
+        refreshRoleIds();
+    }
+
+    private void refreshRoleIds(){
+        roleIds = roleSet.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+    }
 }

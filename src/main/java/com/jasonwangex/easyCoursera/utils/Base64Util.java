@@ -1,4 +1,4 @@
-package com.jasonwangex.easyCoursera.common.util;
+package com.jasonwangex.easyCoursera.utils;
 
 import org.springframework.util.Base64Utils;
 

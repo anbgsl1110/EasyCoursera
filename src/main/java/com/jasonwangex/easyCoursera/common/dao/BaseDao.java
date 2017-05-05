@@ -38,7 +38,11 @@ public interface BaseDao<T extends BaseEntity> {
 
     T getOne(List<Criterion> criteria, List<Order> orders);
 
+    T getOne(String query, Object... objects);
+
     int update(String query, Object... objects);
+
+    int updateField(String field, String value, int id);
 
     int insert(String query, Object... objects);
 

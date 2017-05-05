@@ -12,35 +12,19 @@ import java.util.Date;
  * Created by wangjz
  * on 17/2/24.
  */
-public class BaseEntity implements Serializable{
-    private Integer id;
+public abstract class BaseEntity implements Serializable{
 
-    private Date createTime;
-    private Date modifyTime;
+    public abstract Date getCreateTime();
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+    public abstract void setCreateTime(Date createTime);
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+    public abstract Date getModifyTime();
 
-    public Date getModifyTime() {
-        return modifyTime;
-    }
+    public abstract void setModifyTime(Date modifyTime);
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
+    public abstract Integer getId();
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public abstract void setId(Integer id);
 
     @JsonIgnore
     public boolean nullToEmpty(){
@@ -48,10 +32,8 @@ public class BaseEntity implements Serializable{
     }
 
     public void beforeUpdate() {
-
     }
 
     public void afterUpdate() {
-
     }
 }

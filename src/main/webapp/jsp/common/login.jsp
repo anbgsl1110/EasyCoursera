@@ -2,7 +2,7 @@
 <%@include file="/jsp/include/common.jsp" %>
 <html>
 <head>
-    <title>登录</title>
+    <title>简课-登录</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 </head>
@@ -34,7 +34,7 @@
     var _isQrScaned = function () {
         if (isRequestBack) {
             isRequestBack = false;
-            $.get('/login/check?token=${token}',
+            $.get('/api/login/check?token=${token}',
                 function (resp) {
                     isRequestBack = true;
                     if (resp.message == 'stop') {

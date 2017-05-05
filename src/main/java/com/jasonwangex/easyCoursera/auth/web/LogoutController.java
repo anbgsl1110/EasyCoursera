@@ -1,10 +1,10 @@
-package com.jasonwangex.easyCoursera.auth.web.api;
+package com.jasonwangex.easyCoursera.auth.web;
 
-import com.jasonwangex.easyCoursera.common.bean.ECResponse;
 import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
+import com.jasonwangex.easyCoursera.common.web.BaseController;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,14 +13,19 @@ import javax.servlet.http.HttpServletResponse;
  * Created by wangjz
  * on 17/5/4.
  */
-@RestController
+@Controller
 @RequestMapping("/logout")
-public class LogoutApi {
+public class LogoutController extends BaseController{
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ECResponse logout(HttpServletRequest request,
-                             HttpServletResponse response) {
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
         EcSessionUtil.deleteCookie(request, response);
-        return ECResponse.success();
+        return "/common/logout";
+    }
+
+    @Override
+    public boolean checkLogin() {
+        return false;
     }
 }

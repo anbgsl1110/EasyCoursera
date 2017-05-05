@@ -6,7 +6,6 @@ import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
 import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
 import com.jasonwangex.easyCoursera.common.web.BaseController;
 import com.jasonwangex.easyCoursera.utils.ServerUtil;
-import com.jasonwangex.easyCoursera.utils.WebUtil;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,7 +35,11 @@ public class EcAuthMethodInterceptor implements HandlerInterceptor {
                 if (session.hasRole(roleEnum)) return true;
             }
 
-            if (!session.isLogin()) response.sendRedirect(ServerUtil.getUrl("/login"));
+            if (!session.isLogin()) {
+                request.getRequestDispatcher(ServerUtil.getLoginUri(request))
+                        .forward(request, response);
+                return false;
+            }
         }
 
         Object controller = handlerMethod.getBean();
@@ -44,15 +47,17 @@ public class EcAuthMethodInterceptor implements HandlerInterceptor {
             final BaseController baseController = (BaseController) controller;
 
             if (baseController.checkLogin() && !session.isLogin()) {
-                response.sendRedirect("/login");
+                request.getRequestDispatcher(ServerUtil.getLoginUri(request))
+                        .forward(request, response);
                 return false;
             }
 
-            if (baseController.allow(request)) return true;
+            if (baseController.allow(session)) return true;
         }
 
-//        response.sendError(403);
-        return true;
+        // 若没有继承 baseController 不允许通过
+        response.sendError(403);
+        return false;
     }
 
     @Override

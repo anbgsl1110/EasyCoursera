@@ -14,8 +14,8 @@ import java.util.Map;
  * Created by wangjz
  * on 17/3/2.
  */
-@RestController
-@RequestMapping("/")
+//@RestController
+//@RequestMapping("/")
 public class TempWechatController {
     @Value("${weixin.token}")
     private String token;

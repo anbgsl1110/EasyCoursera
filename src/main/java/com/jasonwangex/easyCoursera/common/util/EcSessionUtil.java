@@ -1,13 +1,7 @@
 package com.jasonwangex.easyCoursera.common.util;
 
-import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
-import com.jasonwangex.easyCoursera.utils.JsonUtil;
-import com.jasonwangex.easyCoursera.utils.SecurityUtil;
-import com.jasonwangex.easyCoursera.utils.ServerUtil;
-import com.jasonwangex.easyCoursera.utils.WebUtil;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.jasonwangex.easyCoursera.utils.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

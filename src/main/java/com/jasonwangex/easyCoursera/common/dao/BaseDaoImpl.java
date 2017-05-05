@@ -5,6 +5,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Table;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Date;
@@ -42,6 +44,17 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
      */
     protected Class<T> getThisClass() {
         return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+
+    /**
+     * 获取泛型的 tableName
+     *
+     * @return
+     */
+    protected String getThisTable() {
+        Class t = getThisClass();
+        Table table = (Table) t.getAnnotation(Table.class);
+        return table.name();
     }
 
     @Override
@@ -159,6 +172,12 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
     }
 
     @Override
+    public int updateField(String field, String value, int id) {
+        String sql = "UPDATE ? SET ?=? WHERE id=?";
+        return update(sql, getThisTable(), field, value, id);
+    }
+
+    @Override
     public int insert(String query, Object... objects) {
         return update(query, objects);
     }
@@ -169,7 +188,7 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
     }
 
     @Override
-    public List<Object[]> get(String query, Object... objects) {
+    public List<T> get(String query, Object... objects) {
         if (StringUtils.isEmpty(query)) return null;
 
         String sql = getSql(query, objects);
@@ -187,11 +206,18 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
                 sqlQuery.setParameter(setCounter++, param);
             }
 
-            return sqlQuery.list();
+            return sqlQuery.addEntity(getThisClass()).list();
         }));
     }
 
-    private String getSql(String sql, Object[] params){
+    @Override
+    public T getOne(String query, Object... objects) {
+        List<T> objects1 = get(query, objects);
+        if (CollectionUtils.isEmpty(objects1)) return null;
+        return objects1.get(0);
+    }
+
+    private String getSql(String sql, Object[] params) {
         sql = sql + " ";
         int counter = 0;
         String[] departs = sql.split("\\?");

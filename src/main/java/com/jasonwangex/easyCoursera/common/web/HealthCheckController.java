@@ -30,6 +30,6 @@ public class HealthCheckController extends BaseController {
 
     @Override
     public boolean checkLogin() {
-        return false;
+        return true;
     }
 }

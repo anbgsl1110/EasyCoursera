@@ -4,7 +4,6 @@ import com.jasonwangex.easyCoursera.account.dao.EcUserDao;
 import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.account.service.EcUserService;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
-import com.jasonwangex.easyCoursera.common.bean.ECResponse;
 import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
 import com.jasonwangex.easyCoursera.common.web.BaseController;
 import com.jasonwangex.easyCoursera.utils.CacheUtil;
@@ -18,7 +17,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import weixin.popular.api.SnsAPI;
 import weixin.popular.bean.sns.SnsToken;
 import weixin.popular.bean.user.User;
@@ -51,6 +49,7 @@ public class LoginController extends BaseController {
         if (redirect == null) redirect = request.getAttribute("redirect") == null ?
                 ServerUtil.getWebRoot() + "/index" : (String) request.getAttribute("redirect");
 
+        String decodeRedirect = WebUtil.decodeUrl(redirect);
         EcSession ecSession = EcSessionUtil.getSession(request);
         if (ecSession.isLogin()) {
             CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
@@ -61,7 +60,7 @@ public class LoginController extends BaseController {
             token = UUID.randomUUID().toString();
             modelMap.addAttribute("token", token);
             modelMap.addAttribute("qrcodeContent", ServerUtil.getWebRoot() + "/login?token=" + token + "&redirect=" + redirect);
-            modelMap.addAttribute("redirectUrl", redirect);
+            modelMap.addAttribute("redirectUrl", decodeRedirect);
             modelMap.addAttribute("loginUrl", redirect);
             CacheUtil.setCache("EC_LOGIN_" + token, new EcSession(), 5 * 60);
             return "/common/login";
