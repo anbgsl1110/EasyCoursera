@@ -13,7 +13,7 @@ public class ServerUtil {
     private static final String HOST = "ec.jasonwangex.com";
 
     public static String getWebRoot() {
-        return "http://" + HOST;
+        return "https://" + HOST;
     }
 
     public static String getHost(){
