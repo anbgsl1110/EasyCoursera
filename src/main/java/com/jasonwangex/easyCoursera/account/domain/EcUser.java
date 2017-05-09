@@ -4,6 +4,7 @@ import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.annotations.*;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -167,10 +168,7 @@ public class EcUser extends BaseEntity {
 
     public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
-        String[] roleStrs = StringUtils.split(this.roleIds);
-        for (String roleStr : roleStrs) {
-            roleSet.add(NumberUtils.toInt(roleStr, 0));
-        }
+        refreshRoleIds();
     }
 
     public String getRoleIds() {
@@ -182,11 +180,13 @@ public class EcUser extends BaseEntity {
     }
 
     public void addRoleId(int roleId) {
+        initRoleSet();
         roleSet.add(roleId);
         refreshRoleIds();
     }
 
     public void deleteRoleId(int roleId) {
+        initRoleSet();
         roleSet.remove(roleId);
         refreshRoleIds();
     }
@@ -195,5 +195,22 @@ public class EcUser extends BaseEntity {
         roleIds = roleSet.stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining(","));
+    }
+
+    private void initRoleSet() {
+        if (!CollectionUtils.isEmpty(roleSet)) return;
+
+        String[] roleStrs = StringUtils.split(this.roleIds);
+        for (String roleStr : roleStrs) {
+            roleSet.add(NumberUtils.toInt(roleStr, 0));
+        }
+    }
+
+    public static void main(String[] args) {
+        EcUser ecUser = new EcUser();
+        ecUser.setRoleIds("1");
+        ecUser.addRoleId(2);
+        System.out.println(ecUser.getRoleIds());
+
     }
 }

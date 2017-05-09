@@ -38,7 +38,7 @@ public class LoginController extends BaseController {
     @Resource
     private EcUserService ecUserService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "")
     public String login(HttpServletRequest request,
                         HttpServletResponse response,
                         ModelMap modelMap,

@@ -46,6 +46,22 @@ public class EcAuthMethodInterceptor implements HandlerInterceptor {
         if (controller instanceof BaseController) {
             final BaseController baseController = (BaseController) controller;
 
+            needRole = baseController.getClass().getAnnotation(NeedRole.class);
+
+            if (needRole != null) {
+                UserRoleEnum[] roleEnums = needRole.value();
+
+                for (UserRoleEnum roleEnum : roleEnums) {
+                    if (session.hasRole(roleEnum)) return true;
+                }
+
+                if (!session.isLogin()) {
+                    request.getRequestDispatcher(ServerUtil.getLoginUri(request))
+                            .forward(request, response);
+                    return false;
+                }
+            }
+
             if (baseController.checkLogin() && !session.isLogin()) {
                 request.getRequestDispatcher(ServerUtil.getLoginUri(request))
                         .forward(request, response);

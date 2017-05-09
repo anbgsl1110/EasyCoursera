@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.common.dao;
 
+import com.jasonwangex.easyCoursera.common.bean.PageBean;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -48,5 +49,9 @@ public interface BaseDao<T extends BaseEntity> {
 
     int delete(String query, Object... objects);
 
-    List get(String query, Object... objects);
+    List<T> get(String query, Object... objects);
+
+    int count(List<Criterion> criteria);
+
+    PageBean<T> getPage(List<Criterion> criteria, List<Order> orders, int page, int size);
 }

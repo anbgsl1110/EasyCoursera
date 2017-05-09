@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.account.dao;
 
 
 import com.jasonwangex.easyCoursera.account.domain.EcUser;
+import com.jasonwangex.easyCoursera.common.bean.PageBean;
 import com.jasonwangex.easyCoursera.common.dao.BaseDao;
 
 /**
@@ -11,4 +12,6 @@ import com.jasonwangex.easyCoursera.common.dao.BaseDao;
 public interface EcUserDao extends BaseDao<EcUser> {
 
     EcUser getByOpenId(String openid);
+
+    PageBean<EcUser> getByName(String name, int page, int size);
 }

@@ -1,10 +1,12 @@
 package com.jasonwangex.easyCoursera.common.dao;
 
+import com.jasonwangex.easyCoursera.common.bean.PageBean;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -16,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.Table;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -120,16 +123,22 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
 
     @Override
     public List<T> getList(List<Criterion> criteria, List<Order> orders, int offset, int limit) {
+        if (CollectionUtils.isEmpty(orders)) {
+            orders = new ArrayList<>(1);
+            orders.add(Order.asc("id"));
+        }
 
         final Class<T> thisClass = getThisClass();
+
+        List<Order> finalOrders = orders;
         return getHibernateTemplate().execute((session) -> {
             Criteria sessionCriteria = session.createCriteria(thisClass);
 
             if (criteria != null) criteria.forEach(sessionCriteria::add);
-            if (orders != null) orders.forEach(sessionCriteria::addOrder);
+            finalOrders.forEach(sessionCriteria::addOrder);
 
-            if (offset > 0) sessionCriteria.setMaxResults(limit);
-            if (limit > 0) sessionCriteria.setFirstResult(offset);
+            if (limit > 0) sessionCriteria.setMaxResults(limit);
+            if (offset > 0) sessionCriteria.setFirstResult(offset);
             return sessionCriteria.list();
         });
     }
@@ -173,8 +182,8 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
 
     @Override
     public int updateField(String field, String value, int id) {
-        String sql = "UPDATE ? SET ?=? WHERE id=?";
-        return update(sql, getThisTable(), field, value, id);
+        String sql = "UPDATE " + getThisTable() + " SET " + field + "=? WHERE id=?";
+        return update(sql, value, id);
     }
 
     @Override
@@ -208,6 +217,23 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
 
             return sqlQuery.addEntity(getThisClass()).list();
         }));
+    }
+
+    @Override
+    public int count(List<Criterion> criteria) {
+        final Class<T> thisClass = getThisClass();
+        Number number = getHibernateTemplate().execute((session) -> (Number) session.createCriteria(thisClass).setProjection(Projections.rowCount()));
+
+        return number.intValue();
+    }
+
+    @Override
+    public PageBean<T> getPage(List<Criterion> criteria, List<Order> orders, int page, int size) {
+        int total = count(criteria);
+        PageBean<T> pageBean = new PageBean<>(page, size, total);
+        List<T> items = getList(criteria, orders, pageBean.getOffset(), size);
+        pageBean.setItems(items);
+        return pageBean;
     }
 
     @Override
