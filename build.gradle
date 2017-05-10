@@ -41,4 +41,6 @@ dependencies {
     compile 'com.github.liyiorg:weixin-popular:2.8.8'
 
     compile group: 'org.apache.tiles', name: 'tiles-jsp', version: '3.0.7'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.1.Final'
+
 }
