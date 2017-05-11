@@ -9,6 +9,7 @@ import java.util.Set;
  * on 17/4/22.
  */
 public enum UserRoleEnum {
+    NONE(-1),
     ANON(0),
     USER(1),
     TEACHER(2),

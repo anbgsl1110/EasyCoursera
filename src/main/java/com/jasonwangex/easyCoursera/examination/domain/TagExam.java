@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.examination.domain;
 
+import com.jasonwangex.easyCoursera.common.annotation.EcDomain;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,13 +13,14 @@ import java.util.Date;
  */
 @Entity
 @DynamicInsert
+@EcDomain("tagexam")
 @Table(name = "ec_tag_exam")
 public class TagExam extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private int examId;
-    private int kpId;
+    private int tagId;
     private Date createTime;
     private Date modifyTime;
 
@@ -40,14 +42,6 @@ public class TagExam extends BaseEntity{
         this.examId = examId;
     }
 
-    public int getKpId() {
-        return kpId;
-    }
-
-    public void setKpId(int kpId) {
-        this.kpId = kpId;
-    }
-
     @Override
     public Date getCreateTime() {
         return createTime;
@@ -66,5 +60,13 @@ public class TagExam extends BaseEntity{
     @Override
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
     }
 }

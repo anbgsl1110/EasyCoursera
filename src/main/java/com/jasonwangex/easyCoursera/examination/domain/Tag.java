@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.examination.domain;
 
+import com.jasonwangex.easyCoursera.common.annotation.EcDomain;
 import com.jasonwangex.easyCoursera.common.domain.AuthorEntity;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,6 +14,7 @@ import java.util.Date;
  */
 @Entity
 @DynamicInsert
+@EcDomain("tag")
 @Table(name = "ec_tag")
 public class Tag extends BaseEntity implements AuthorEntity {
     @Id

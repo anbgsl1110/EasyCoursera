@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.common.dao;
 
 import com.jasonwangex.easyCoursera.common.bean.PageBean;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Criterion;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.Table;
 import java.lang.reflect.ParameterizedType;
@@ -152,6 +152,16 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
             if (offset > 0) sessionCriteria.setFirstResult(offset);
             return sessionCriteria.list();
         });
+    }
+
+    @Override
+    public T getByField(String field, Object value) {
+        if (StringUtils.isBlank(field)) return null;
+
+        List<Criterion> criteria = new ArrayList<>();
+        criteria.add(Restrictions.eq(field, value));
+
+        return getOne(criteria);
     }
 
     @Override

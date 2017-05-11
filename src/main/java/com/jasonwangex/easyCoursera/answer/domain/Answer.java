@@ -1,5 +1,6 @@
-package com.jasonwangex.easyCoursera.examination.domain;
+package com.jasonwangex.easyCoursera.answer.domain;
 
+import com.jasonwangex.easyCoursera.common.annotation.EcDomain;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,8 +13,9 @@ import java.util.Date;
  */
 @Entity
 @DynamicInsert
+@EcDomain("answer")
 @Table(name = "ec_answer")
-public class Answer extends BaseEntity{
+public class Answer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -21,9 +23,8 @@ public class Answer extends BaseEntity{
     private int examId;
     private int answerCount;
     private String content;
-    private int score;
+    private String reply;
     private boolean judge;
-    private int rightCount;
     private Date createTime;
     private Date modifyTime;
 
@@ -69,28 +70,12 @@ public class Answer extends BaseEntity{
         this.content = content;
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public boolean isJudge() {
         return judge;
     }
 
     public void setJudge(boolean judge) {
         this.judge = judge;
-    }
-
-    public int getRightCount() {
-        return rightCount;
-    }
-
-    public void setRightCount(int rightCount) {
-        this.rightCount = rightCount;
     }
 
     @Override
@@ -111,5 +96,13 @@ public class Answer extends BaseEntity{
     @Override
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 }

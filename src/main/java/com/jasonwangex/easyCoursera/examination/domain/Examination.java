@@ -3,17 +3,17 @@ package com.jasonwangex.easyCoursera.examination.domain;
 import com.jasonwangex.easyCoursera.common.annotation.EcDomain;
 import com.jasonwangex.easyCoursera.common.domain.AuthorEntity;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
+import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by wangjz
  * on 17/5/9.
  */
+@Entity
+@DynamicInsert
 @EcDomain("examination")
 @Table(name = "ec_examination")
 public class Examination extends BaseEntity implements AuthorEntity {

@@ -39,6 +39,8 @@ public interface BaseDao<T extends BaseEntity> {
 
     List<T> getList(List<Criterion> criteria, List<Order> orders, int offset, int limit);
 
+    T getByField(String field, Object value);
+
     T getOne(List<Criterion> criteria);
 
     T getOne(List<Criterion> criteria, List<Order> orders);
