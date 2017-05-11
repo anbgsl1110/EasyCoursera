@@ -15,11 +15,15 @@ import java.util.List;
  */
 public interface BaseDao<T extends BaseEntity> {
 
+    Class getThisClass();
+
     void setHibernateTemplate0(HibernateTemplate hibernateTemplate);
 
     void save(T obj);
 
     T getById(int id);
+
+    List<T> getListById(List<Integer> ids);
 
     void deleteById(int id);
 

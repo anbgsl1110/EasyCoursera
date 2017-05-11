@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity
 @DynamicInsert
 @Table(name = "ec_answer")
-public class EcAnswer extends BaseEntity{
+public class Answer extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

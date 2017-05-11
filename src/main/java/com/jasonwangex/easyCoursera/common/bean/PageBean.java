@@ -1,6 +1,7 @@
 package com.jasonwangex.easyCoursera.common.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -57,5 +58,9 @@ public class PageBean<T> {
         if (page <= 0 || size <= 0) return 0;
 
         return (page - 1) * size;
+    }
+
+    public static boolean isEmpty(PageBean pageBean) {
+        return pageBean == null || CollectionUtils.isEmpty(pageBean.getItems());
     }
 }

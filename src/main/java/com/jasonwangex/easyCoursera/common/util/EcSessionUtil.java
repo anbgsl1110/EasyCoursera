@@ -46,6 +46,8 @@ public class EcSessionUtil {
     }
 
     public static EcSession getSession(HttpServletRequest request) {
+        if (request == null) return new EcSession();
+
         Object session = request.getAttribute(EC_SESSION);
         if (session != null) return (EcSession) session;
 

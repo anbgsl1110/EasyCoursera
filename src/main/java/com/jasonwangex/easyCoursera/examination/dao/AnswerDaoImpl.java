@@ -1,7 +1,7 @@
 package com.jasonwangex.easyCoursera.examination.dao;
 
 import com.jasonwangex.easyCoursera.common.dao.BaseDaoImpl;
-import com.jasonwangex.easyCoursera.examination.domain.EcKpExam;
+import com.jasonwangex.easyCoursera.examination.domain.Answer;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * on 17/5/9.
  */
 @Repository
-public class EcKpExamDaoImpl extends BaseDaoImpl<EcKpExam> implements EcKpExamDao {
+public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements AnswerDao {
 }

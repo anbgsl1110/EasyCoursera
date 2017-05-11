@@ -41,7 +41,12 @@ public class ContextUtil implements ApplicationContextAware {
     }
 
     public static HttpServletRequest getHttpServletRequest() {
-        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        return sra != null ? sra.getRequest() : null;
+        try {
+            ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            return sra != null ? sra.getRequest() : null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

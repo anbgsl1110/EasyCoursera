@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,6 +56,21 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String readParam(HttpServletRequest request) {
+        Map<String, String[]> param = request.getParameterMap();
+        Map<String, Object> map = new HashMap<>();
+
+        param.forEach((key, value) -> {
+            if (value.length == 1) {
+                map.put(key, value[0]);
+            } else {
+                map.put(key, Arrays.asList(value));
+            }
+        });
+
+        return toString(map);
     }
 
     public static void main(String[] args) {

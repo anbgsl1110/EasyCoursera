@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.examination.domain;
 
+import com.jasonwangex.easyCoursera.common.domain.AuthorEntity;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,14 +13,14 @@ import java.util.Date;
  */
 @Entity
 @DynamicInsert
-@Table(name = "ec_examination")
-public class EcExamination extends BaseEntity {
+@Table(name = "ec_tag")
+public class Tag extends BaseEntity implements AuthorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String content;
-    private int type;
-    private String answer;
+    private int root;
+    private String name;
+    private String detail;
     private int creator;
     private int modifier;
     private Date createTime;
@@ -35,42 +36,46 @@ public class EcExamination extends BaseEntity {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public int getRoot() {
+        return root;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setRoot(int root) {
+        this.root = root;
     }
 
-    public int getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
+    @Override
     public int getCreator() {
         return creator;
     }
 
+    @Override
     public void setCreator(int creator) {
         this.creator = creator;
     }
 
+    @Override
     public int getModifier() {
         return modifier;
     }
 
+    @Override
     public void setModifier(int modifier) {
         this.modifier = modifier;
     }

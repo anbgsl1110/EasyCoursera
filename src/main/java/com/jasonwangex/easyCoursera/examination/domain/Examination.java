@@ -1,25 +1,28 @@
 package com.jasonwangex.easyCoursera.examination.domain;
 
+import com.jasonwangex.easyCoursera.common.annotation.EcDomain;
+import com.jasonwangex.easyCoursera.common.domain.AuthorEntity;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
-import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * Created by wangjz
  * on 17/5/9.
  */
-@Entity
-@DynamicInsert
-@Table(name = "ec_knowledge_point")
-public class EcKnowledgePoint extends BaseEntity {
+@EcDomain("examination")
+@Table(name = "ec_examination")
+public class Examination extends BaseEntity implements AuthorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private int root;
-    private String name;
-    private String detail;
+    private String content;
+    private int type;
+    private String answer;
     private int creator;
     private int modifier;
     private Date createTime;
@@ -35,28 +38,28 @@ public class EcKnowledgePoint extends BaseEntity {
         this.id = id;
     }
 
-    public int getRoot() {
-        return root;
+    public String getContent() {
+        return content;
     }
 
-    public void setRoot(int root) {
-        this.root = root;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getName() {
-        return name;
+    public int getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public String getDetail() {
-        return detail;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public int getCreator() {

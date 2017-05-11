@@ -12,8 +12,8 @@ import java.util.Date;
  */
 @Entity
 @DynamicInsert
-@Table(name = "ec_kp_exam")
-public class EcKpExam extends BaseEntity{
+@Table(name = "ec_tag_exam")
+public class TagExam extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

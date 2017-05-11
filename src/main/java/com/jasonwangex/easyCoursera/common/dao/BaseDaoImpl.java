@@ -7,7 +7,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import org.hibernate.engine.query.spi.sql.NativeSQLQueryReturn;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -18,10 +18,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.Table;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,6 +30,7 @@ import java.util.stream.Stream;
 @Transactional
 @SuppressWarnings("unchecked")
 public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport implements BaseDao<T> {
+    private Class thisClass;
 
     @Autowired
     public void setHibernateTemplate0(HibernateTemplate hibernateTemplate) {
@@ -45,8 +43,11 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
      *
      * @return
      */
-    protected Class<T> getThisClass() {
-        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    public Class<T> getThisClass() {
+        if (thisClass == null) {
+            thisClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        }
+        return thisClass;
     }
 
     /**
@@ -84,6 +85,15 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
     public T getById(int id) {
         if (id <= 0) return null;
         return getHibernateTemplate().get(getThisClass(), id);
+    }
+
+    @Override
+    public List<T> getListById(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) return Collections.emptyList();
+
+        List<Criterion> criteria = new ArrayList<>(1);
+        criteria.add(Restrictions.in("id", ids));
+        return getList(criteria);
     }
 
     @Override
@@ -125,7 +135,7 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
     public List<T> getList(List<Criterion> criteria, List<Order> orders, int offset, int limit) {
         if (CollectionUtils.isEmpty(orders)) {
             orders = new ArrayList<>(1);
-            orders.add(Order.asc("id"));
+            orders.add(Order.desc("id"));
         }
 
         final Class<T> thisClass = getThisClass();

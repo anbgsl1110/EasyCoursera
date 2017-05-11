@@ -1,5 +1,8 @@
 package com.jasonwangex.easyCoursera.examination.bean;
 
+import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
+import com.jasonwangex.easyCoursera.common.annotation.EcParam;
+import com.jasonwangex.easyCoursera.common.enmu.EcParamType;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -10,12 +13,12 @@ import java.io.Serializable;
  * Created by wangjz
  * on 17/5/10.
  */
-public class EcExaminationParam implements Serializable {
+@EcParam(value = "examination", type = EcParamType.CREATE, role = UserRoleEnum.TEACHER)
+public class ExaminationParam implements Serializable {
     @NotNull @Length(max = 5000)
     private String content;
-    private int type;
     @Range(min = 1)
-    private int kpId;
+    private int type;
 
     public String getContent() {
         return content;
@@ -31,13 +34,5 @@ public class EcExaminationParam implements Serializable {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public int getKpId() {
-        return kpId;
-    }
-
-    public void setKpId(int kpId) {
-        this.kpId = kpId;
     }
 }
