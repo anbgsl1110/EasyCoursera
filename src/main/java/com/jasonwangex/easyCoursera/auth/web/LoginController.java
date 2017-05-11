@@ -96,7 +96,8 @@ public class LoginController extends BaseController {
 
         EcSessionUtil.setSession(request, response, ecSession);
         CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
-        return "redirect:" + ServerUtil.getUrl(redirect);
+        WebUtil.sendRedirect(response, redirect);
+        return null;
     }
 
     @Override

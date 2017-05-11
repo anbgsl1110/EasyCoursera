@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  * on 17/2/23.
  */
 @Component
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.NEVER)
 @SuppressWarnings("unchecked")
 public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport implements BaseDao<T> {
     private Class thisClass;

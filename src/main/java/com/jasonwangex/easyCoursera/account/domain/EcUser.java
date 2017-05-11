@@ -176,6 +176,7 @@ public class EcUser extends BaseEntity {
     }
 
     public Set<Integer> getRoleIdSet(){
+        initRoleSet();
         return roleSet;
     }
 
@@ -200,7 +201,9 @@ public class EcUser extends BaseEntity {
     private void initRoleSet() {
         if (!CollectionUtils.isEmpty(roleSet)) return;
 
-        String[] roleStrs = StringUtils.split(this.roleIds);
+        if (StringUtils.isBlank(this.roleIds)) return;
+
+        String[] roleStrs = this.roleIds.split(",");
         for (String roleStr : roleStrs) {
             roleSet.add(NumberUtils.toInt(roleStr, 0));
         }
