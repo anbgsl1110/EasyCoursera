@@ -87,6 +87,7 @@ public class LoginController extends BaseController {
         }
 
         ecSession = new EcSession();
+        ecSession.setRoleIds(ecUser.getRoleIdSet());
         ecSession.setUserId(ecUser.getId());
         ecSession.setOpenId(ecUser.getOpenid());
         ecSession.setTimestamp(System.currentTimeMillis());

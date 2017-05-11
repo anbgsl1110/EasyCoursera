@@ -107,8 +107,7 @@ public class BaseUserApi extends BaseController {
     @RequestMapping(value = "/{domain}/delete", method = RequestMethod.POST)
     public ECResponse delete(@PathVariable String domain,
                              @RequestParam(value = "id", required = false, defaultValue = "0") int id,
-                             HttpServletRequest request)
-            throws IllegalAccessException, InstantiationException {
+                             HttpServletRequest request) throws IllegalAccessException, InstantiationException {
         Class<?> paramClazz = EcClassAliasUtil.getClass(EcParamType.MODIFY, domain);
         Class<?> entityClazz = EcClassAliasUtil.getEntityClass(domain);
 
@@ -127,8 +126,7 @@ public class BaseUserApi extends BaseController {
     @RequestMapping(value = "/{domain}/get", method = RequestMethod.GET)
     public ECResponse get(@PathVariable String domain,
                           @RequestParam(value = "id", required = false, defaultValue = "0") int id,
-                          HttpServletRequest request)
-            throws IllegalAccessException, InstantiationException {
+                          HttpServletRequest request) throws IllegalAccessException, InstantiationException {
 
         Class<?> paramClazz = EcClassAliasUtil.getClass(EcParamType.QUERY, domain);
         Class<?> entityClazz = EcClassAliasUtil.getEntityClass(domain);
@@ -146,8 +144,7 @@ public class BaseUserApi extends BaseController {
 
     @RequestMapping(value = "/{domain}/list", method = RequestMethod.GET)
     public ECResponse get(@PathVariable String domain,
-                          HttpServletRequest request)
-            throws IllegalAccessException, InstantiationException {
+                          HttpServletRequest request) throws IllegalAccessException, InstantiationException {
 
         Class<?> paramClazz = EcClassAliasUtil.getClass(EcParamType.QUERY, domain);
         Class<?> entityClazz = EcClassAliasUtil.getEntityClass(domain);

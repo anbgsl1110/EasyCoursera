@@ -54,7 +54,7 @@ public class EcSessionUtil {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) return new EcSession();
 
-        return Arrays.stream(cookies)
+        EcSession session1 = Arrays.stream(cookies)
                 .filter(cookie -> EC_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
@@ -62,6 +62,7 @@ public class EcSessionUtil {
                 .map(value -> JsonUtil.toObject(EcSession.class, value))
                 .filter(ecSession -> ecSession.getTimestamp() + EC_SESSION_LIFE * 1000L > System.currentTimeMillis())
                 .orElse(new EcSession());
+        return getSign(session1).equals(session1.getSign()) ? session1 : new EcSession();
     }
 
     public static String getSign(String password) {

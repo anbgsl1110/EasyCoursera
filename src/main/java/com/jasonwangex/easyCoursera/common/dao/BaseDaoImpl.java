@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
  * on 17/2/23.
  */
 @Component
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 @SuppressWarnings("unchecked")
 public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport implements BaseDao<T> {
     private Class thisClass;
