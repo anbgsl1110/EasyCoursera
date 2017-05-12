@@ -5,11 +5,8 @@ import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,7 +16,9 @@ import java.util.Map;
 @Entity
 @DynamicInsert
 @Table(name = "ec_qrcode")
-public class Qrcode extends BaseEntity{
+public class Qrcode extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
     private int type;
