@@ -7,8 +7,8 @@ import com.jasonwangex.easyCoursera.auth.annonation.NeedRole;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
 import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
 import com.jasonwangex.easyCoursera.common.bean.ECResponse;
+import com.jasonwangex.easyCoursera.common.util.EcConsts;
 import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
-import com.jasonwangex.easyCoursera.examination.consts.ExamConsts;
 import com.jasonwangex.easyCoursera.examination.dao.ExaminationDao;
 import com.jasonwangex.easyCoursera.examination.domain.Examination;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +45,7 @@ public class UserAnswerApi {
 
         if (answer == null) return ECResponse.fail("题目不存在或超出答题限制");
 
-        if (exam.getType() == ExamConsts.TYPE_ANSWER_UNIQUE) {
+        if (exam.getType() == EcConsts.Exam.TYPE_ANSWER_UNIQUE) {
             if (AnswerUtil.check(exam, answer)) answerDao.save(answer);
             // todo message
         }
