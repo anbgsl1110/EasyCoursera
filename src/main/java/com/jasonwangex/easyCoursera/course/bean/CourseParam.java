@@ -22,6 +22,9 @@ public class CourseParam {
     private String content;
 
     @NotNull
+    private Boolean needCheck;
+
+    @NotNull
     @Max(1)
     private int status;
 
@@ -47,5 +50,13 @@ public class CourseParam {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isNeedCheck() {
+        return needCheck;
+    }
+
+    public void setNeedCheck(boolean needCheck) {
+        this.needCheck = needCheck;
     }
 }

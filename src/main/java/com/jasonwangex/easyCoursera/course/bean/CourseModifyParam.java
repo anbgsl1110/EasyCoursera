@@ -17,10 +17,15 @@ public class CourseModifyParam {
     @NotNull
     @Range(min = 1)
     private int id;
+
     @Length(min = 1, max = 32)
     private String name;
+
     @Length(max = 60000)
     private String content;
+
+    @NotNull
+    private Boolean needCheck;
 
     @Range(max = 1)
     private int status;
@@ -55,5 +60,13 @@ public class CourseModifyParam {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Boolean getNeedCheck() {
+        return needCheck;
+    }
+
+    public void setNeedCheck(Boolean needCheck) {
+        this.needCheck = needCheck;
     }
 }

@@ -17,11 +17,15 @@ import java.util.Date;
 @EcDomain("course")
 @Table(name = "ec_course")
 public class Course extends BaseEntity implements AuthorEntity {
+    private static final long serialVersionUID = -7560271286779240434L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
     private String content;
+    private boolean needCheck;
+    private int chooseCount;
     private int status;
     private int creator;
     private int modifier;
@@ -96,5 +100,21 @@ public class Course extends BaseEntity implements AuthorEntity {
     @Override
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public boolean isNeedCheck() {
+        return needCheck;
+    }
+
+    public void setNeedCheck(boolean needCheck) {
+        this.needCheck = needCheck;
+    }
+
+    public int getChooseCount() {
+        return chooseCount;
+    }
+
+    public void setChooseCount(int chooseCount) {
+        this.chooseCount = chooseCount;
     }
 }
