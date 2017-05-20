@@ -28,6 +28,7 @@ public class EcSessionUtil {
         String host = ServerUtil.getHost();
         if (session == null) return;
 
+        session.buildSign();
         try {
             String sessionStr = JsonUtil.toString(session);
             Cookie cookie = new Cookie(EC_COOKIE_NAME, Base64Util.encodeUrl(sessionStr));
@@ -48,13 +49,13 @@ public class EcSessionUtil {
     public static EcSession getSession(HttpServletRequest request) {
         if (request == null) return new EcSession();
 
-        Object session = request.getAttribute(EC_SESSION);
-        if (session != null) return (EcSession) session;
+        Object sessionObj = request.getAttribute(EC_SESSION);
+        if (sessionObj != null) return (EcSession) sessionObj;
 
         Cookie[] cookies = request.getCookies();
         if (cookies == null) return new EcSession();
 
-        EcSession session1 = Arrays.stream(cookies)
+        EcSession session = Arrays.stream(cookies)
                 .filter(cookie -> EC_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
@@ -62,7 +63,7 @@ public class EcSessionUtil {
                 .map(value -> JsonUtil.toObject(EcSession.class, value))
                 .filter(ecSession -> ecSession.getTimestamp() + EC_SESSION_LIFE * 1000L > System.currentTimeMillis())
                 .orElse(new EcSession());
-        return getSign(session1).equals(session1.getSign()) ? session1 : new EcSession();
+        return session.isValid() ? session : new EcSession();
     }
 
     public static String getSign(String password) {

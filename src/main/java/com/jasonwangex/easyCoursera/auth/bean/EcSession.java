@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.auth.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
+import com.jasonwangex.easyCoursera.common.util.EcSessionUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +14,9 @@ import java.util.Set;
  * Created by wangjz
  * on 17/4/22.
  */
-public class EcSession implements Serializable{
+public class EcSession implements Serializable {
+    private static final long serialVersionUID = 1376751304376055290L;
+
     private int userId;
     private String nickname;
     private String avatar;
@@ -110,5 +113,14 @@ public class EcSession implements Serializable{
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public void buildSign() {
+        sign = EcSessionUtil.getSign(this);
+    }
+
+    @JsonIgnore
+    public boolean isValid() {
+        return this.sign != null && this.sign.equals(EcSessionUtil.getSign(this));
     }
 }

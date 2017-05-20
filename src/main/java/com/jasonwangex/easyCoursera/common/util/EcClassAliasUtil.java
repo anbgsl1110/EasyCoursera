@@ -36,7 +36,7 @@ public class EcClassAliasUtil {
                 if (annotation != null) {
                     String alias = annotation.type().getValue() + annotation.value();
                     if (FACTORY.containsKey(alias) && clazz != FACTORY.get(alias)) {
-                        throw new EcClassAliasClashException("class alias clash");
+                        throw new EcClassAliasClashException("class alias clash:" + alias);
                     }
                     FACTORY.put(alias, clazz);
                 }

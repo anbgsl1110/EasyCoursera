@@ -9,8 +9,9 @@
         </div>
         <form class="navbar-form navbar-left">
             <div class="input-group">
-                <input type="text" value="" class="form-control" placeholder="Search dashboard...">
-                <span class="input-group-btn"><button type="button" class="btn btn-primary">Go</button></span>
+                <input id="ec-input-search" class="form-control" value="" placeholder="知识点关键词...">
+                <span class="input-group-btn"><button id="ec-btn-search" type="button" class="btn btn-primary"
+                                                      style="background-color: #323848;border-color: #323848;">搜索</button></span>
             </div>
         </form>
         <div id="navbar-menu">
@@ -18,19 +19,27 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
                         <i class="lnr lnr-alarm"></i>
-                        <span class="badge bg-danger">5</span>
+                        <span id="ec-data-user-message-count" class="badge bg-danger"></span>
                     </a>
                     <ul class="dropdown-menu notifications">
-                        <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>System space is almost full</a></li>
-                        <li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
-                        <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is available</a></li>
-                        <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
-                        <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Your request has been approved</a></li>
+                        <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>System space is
+                            almost full</a></li>
+                        <li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9
+                            unfinished tasks</a></li>
+                        <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is
+                            available</a></li>
+                        <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Weekly meeting in
+                            1 hour</a></li>
+                        <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Your request has
+                            been approved</a></li>
                         <li><a href="#" class="more">See all notifications</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="${userAvatar}" class="img-circle" alt="Avatar"><span>${userName}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="ec-user-avatar"
+                                                                                    src="${userAvatar}"
+                                                                                    class="img-circle" alt="头像"><span
+                            id="ec-user-name">${userName}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/profile"><i class="lnr lnr-user"></i> <span>个人资料</span></a></li>
                         <li><a href="/logout"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
@@ -39,4 +48,24 @@
             </ul>
         </div>
     </div>
+
+    <script>
+        function refreshProfile() {
+            var data = getOne("/user/api/account", "GET");
+            $("#ec-user-name").text(data.nickname);
+            if (data.messageCount > 0) $("#ec-data-user-message-count").text(data.messageCount);
+            else $("#ec-data-user-message-count").text("");
+            $("#ec-user-avatar").attr("src", data.avatar);
+        }
+
+        $('#ec-btn-search').click(function () {
+            var val = $("#ec-input-search").val();
+            if (val) window.location.href = "/search?keyword=" + encodeURIComponent(val);
+        });
+
+        $(function () {
+            refreshProfile();
+        });
+    </script>
 </nav>
+

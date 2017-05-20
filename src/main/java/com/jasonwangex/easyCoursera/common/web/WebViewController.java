@@ -15,17 +15,35 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("")
-public class IndexController extends BaseController{
+public class WebViewController extends BaseController{
 
     @RequestMapping(value = {"/index", ""}, method = RequestMethod.GET)
     public String index(ModelMap modelMap,
                         HttpServletRequest request) {
+        setCommon(modelMap, request, "简课-首页", "index");
+        return "index/main";
+    }
+
+    @RequestMapping(value = "/course", method = RequestMethod.GET)
+    public String course(ModelMap modelMap,
+                         HttpServletRequest request) {
+        setCommon(modelMap, request, "简课-课程管理", "course");
+
+        return "index/course";
+    }
+
+
+
+    private void setCommon(ModelMap modelMap,
+                           HttpServletRequest request,
+                           String title,
+                           String type) {
         EcSession session = EcSessionUtil.getSession(request);
 
-        modelMap.put("title", "简课-首页");
+        modelMap.put("title", title);
         modelMap.put("userName", session.getNickname());
         modelMap.put("userAvatar", session.getAvatar());
-        return "index/main";
+        modelMap.put("viewType", type);
     }
 
 }

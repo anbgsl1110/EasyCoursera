@@ -44,6 +44,7 @@ public class LoginController extends BaseController {
                         ModelMap modelMap,
                         @RequestParam(value = "redirect", required = false) String encodeRedirect,
                         @RequestParam(value = "token", required = false) String token,
+                        @RequestParam(value = "state", required = false) String state,
                         @RequestParam(value = "code", required = false) String code) {
 
         if (encodeRedirect == null) encodeRedirect = request.getAttribute("redirect") == null ?
@@ -67,7 +68,7 @@ public class LoginController extends BaseController {
         }
 
         if (StringUtils.isEmpty(code)) {
-            String redirectUrl = SnsAPI.connectOauth2Authorize(WechatUtil.getAppId(), ServerUtil.getUrl("/login"), false, null);
+            String redirectUrl = SnsAPI.connectOauth2Authorize(WechatUtil.getAppId(), ServerUtil.getUrl("/login"), false, token);
             WebUtil.sendRedirect(response, redirectUrl);
             return null;
         }
@@ -92,10 +93,12 @@ public class LoginController extends BaseController {
         ecSession.setOpenId(ecUser.getOpenid());
         ecSession.setTimestamp(System.currentTimeMillis());
         ecSession.setNonce(RandomStringUtils.random(32, true, true));
-        ecSession.setSign(EcSessionUtil.getSign(ecSession));
+        ecSession.setNickname(ecUser.getNickname());
+        ecSession.setAvatar(ecUser.getAvatar());
 
         EcSessionUtil.setSession(request, response, ecSession);
-        CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
+
+        CacheUtil.setCache("EC_LOGIN_" + state, ecSession, 60);
         WebUtil.sendRedirect(response, redirect);
         return null;
     }

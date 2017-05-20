@@ -16,4 +16,12 @@
     <link rel="stylesheet" href="/resources/css/demo.css">
     <!-- ICONS -->
     <link rel="icon" type="image/png" sizes="96x96" href="/resources/img/icon.png">
+
+    <script src="/resources/vendor/jquery/jquery.min.js"></script>
+    <script src="/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/resources/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/resources/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+    <script src="/resources/vendor/chartist/js/chartist.min.js"></script>
+    <script src="/resources/js/ec-common.js"></script>
+    <script src="/resources/js/klorofil-common.js"></script>
 </head>
