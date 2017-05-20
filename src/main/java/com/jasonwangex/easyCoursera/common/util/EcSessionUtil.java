@@ -75,6 +75,8 @@ public class EcSessionUtil {
                 + ecSession.getTimestamp()
                 + ecSession.getUserId()
                 + ecSession.getNonce()
+                + ecSession.getNickname()
+                + ecSession.getAvatar()
                 + Arrays.toString(ecSession.getRoleIds().toArray());
 
         return getSign(sessionStr);

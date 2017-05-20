@@ -15,6 +15,8 @@ import java.util.Set;
  */
 public class EcSession implements Serializable{
     private int userId;
+    private String nickname;
+    private String avatar;
     private Set<Integer> roleIds;
     private long trace;
     private long timestamp;
@@ -92,5 +94,21 @@ public class EcSession implements Serializable{
 
     public void setNonce(String nonce) {
         this.nonce = nonce;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

@@ -17,7 +17,7 @@ public class KeepAliveTask {
     @Resource
     private EcUserDao ecUserDao;
 
-    @Scheduled(fixedDelay = 10000L)
+    @Scheduled(initialDelay = 2000L, fixedDelay = 10000L)
     public void keepAlive(){
         try {
             EcUser user = ecUserDao.getOne(Collections.emptyList(), null);

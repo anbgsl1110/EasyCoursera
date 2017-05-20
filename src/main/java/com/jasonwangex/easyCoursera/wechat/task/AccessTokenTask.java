@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccessTokenTask {
 
-    @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 1000)
+    @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 1000L)
     public void refresh(){
+        System.out.println("Refresh Access Token!");
         WechatUtil.refreshAccessToken();
     }
 }
