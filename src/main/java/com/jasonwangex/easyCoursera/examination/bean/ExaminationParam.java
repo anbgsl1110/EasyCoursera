@@ -15,8 +15,12 @@ import java.io.Serializable;
  */
 @EcParam(value = "examination", type = EcParamType.CREATE, role = UserRoleEnum.TEACHER)
 public class ExaminationParam implements Serializable {
-    @NotNull @Length(max = 5000)
+    private static final long serialVersionUID = 6569296356523514125L;
+
+    @NotNull
+    @Length(max = 5000)
     private String content;
+    private String answer;
     @Range(min = 1)
     private int type;
 
@@ -34,5 +38,13 @@ public class ExaminationParam implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }

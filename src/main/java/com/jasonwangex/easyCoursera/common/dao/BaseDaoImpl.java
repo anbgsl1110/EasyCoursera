@@ -243,7 +243,12 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
     @Override
     public int count(List<Criterion> criteria) {
         final Class<T> thisClass = getThisClass();
-        Number number = (Number) getHibernateTemplate().execute((session) -> session.createCriteria(thisClass).setProjection(Projections.rowCount()).uniqueResult());
+        Number number = (Number) getHibernateTemplate().execute((session) -> {
+            Criteria sessionCriteria = session.createCriteria(thisClass);
+
+            if (criteria != null) criteria.forEach(sessionCriteria::add);
+            return sessionCriteria.setProjection(Projections.rowCount()).uniqueResult();
+        });
 
         return number.intValue();
     }

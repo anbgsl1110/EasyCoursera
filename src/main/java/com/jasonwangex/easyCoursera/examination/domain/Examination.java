@@ -17,6 +17,8 @@ import java.util.Date;
 @EcDomain("examination")
 @Table(name = "ec_examination")
 public class Examination extends BaseEntity implements AuthorEntity {
+    private static final long serialVersionUID = 2516618204202196670L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

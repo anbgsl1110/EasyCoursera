@@ -41,9 +41,9 @@
 <div id="wrapper">
     <%@include file="/jsp/include/nav.jsp" %>
     <%@include file="/jsp/include/leftside.jsp" %>
-    <link rel="stylesheet" href="/resources/dist/bootstrap-table.css">
-    <script src="/resources/dist/bootstrap-table.js"></script>
-    <script src="/resources/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="/resources/css/bootstrap-table.min.css">
+    <script src="/resources/js/bootstrap-table.min.js"></script>
+    <script src="/resources/js/bootstrap-table-zh-CN.js"></script>
 
 
     <div class="main">

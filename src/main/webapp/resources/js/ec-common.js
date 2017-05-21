@@ -128,7 +128,8 @@ $(document).ready(function () {
         queryParams: tableDataQuery,
         onClickRow: tableDataOnClickRow,
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 16,
+        escape:true,
         columns: columns
     });
 });
