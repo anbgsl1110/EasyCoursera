@@ -102,7 +102,7 @@ public class ECResponse {
         response.error = 4200;
         response.message = result.getAllErrors().stream()
                 .map(objectError -> objectError.getDefaultMessage())
-                .collect(Collectors.joining(";"));
+                .collect(Collectors.joining(";\n"));
         return response;
     }
 

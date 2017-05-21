@@ -21,7 +21,7 @@ public class WebViewController extends BaseController{
     public String index(ModelMap modelMap,
                         HttpServletRequest request) {
         setCommon(modelMap, request, "简课-首页", "index");
-        return "index/main";
+        return "teacher/main";
     }
 
     @RequestMapping(value = "/course", method = RequestMethod.GET)
@@ -29,7 +29,7 @@ public class WebViewController extends BaseController{
                          HttpServletRequest request) {
         setCommon(modelMap, request, "简课-课程管理", "course");
 
-        return "index/course";
+        return "teacher/course";
     }
 
 

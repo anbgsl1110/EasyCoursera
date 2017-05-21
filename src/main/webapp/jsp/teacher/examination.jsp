@@ -8,11 +8,11 @@
             <div class="modal-header">
                 <button id="ec-modal-close" type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 id="ec-modal-title" class="modal-title">发布课程</h4>
+                <h4 id="ec-modal-title" class="modal-title">题库管理</h4>
             </div>
             <div class="modal-body">
                 <form id="ec-modal-form" class="form-inline">
-                    <label for="ec-course-input-name">课程名称：</label>
+                    <label for="ec-course-input-name">题目名称：</label>
                     <input type="text" id="ec-course-input-name" name="name">
                     <br><br>
 

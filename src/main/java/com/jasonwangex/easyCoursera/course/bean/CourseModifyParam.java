@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.course.bean;
 
 import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
 import com.jasonwangex.easyCoursera.common.annotation.EcParam;
+import com.jasonwangex.easyCoursera.common.bean.ModifyParam;
 import com.jasonwangex.easyCoursera.common.enmu.EcParamType;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * on 17/5/21.
  */
 @EcParam(value = "course", type = EcParamType.MODIFY, role = UserRoleEnum.TEACHER)
-public class CourseModifyParam {
+public class CourseModifyParam implements ModifyParam{
     @NotNull
     @Range(min = 1)
     private int id;
@@ -24,8 +25,7 @@ public class CourseModifyParam {
     @Length(max = 60000)
     private String content;
 
-    @NotNull
-    private Boolean needCheck;
+    private boolean needCheck;
 
     @Range(max = 1)
     private int status;
@@ -62,11 +62,11 @@ public class CourseModifyParam {
         this.status = status;
     }
 
-    public Boolean getNeedCheck() {
+    public boolean isNeedCheck() {
         return needCheck;
     }
 
-    public void setNeedCheck(Boolean needCheck) {
+    public void setNeedCheck(boolean needCheck) {
         this.needCheck = needCheck;
     }
 }

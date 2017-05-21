@@ -33,33 +33,69 @@ function tableDataSerialize(resp) {
     };
 }
 
-function submitModal() {
+function submitModal(url) {
+    var create = $('#ec-modal-form').attr("_create") == "true";
+
     $('#ec-modal-form').find(".input-checkbox").each(function () {
         var obj = $(this);
         if (obj.attr("checked")) obj.val("true");
     });
+
     var data = $('#ec-modal-form').serialize();
-    var resp = request("/user/api/" + VIEW_TYPE + "/create", "POST", data);
-    console.log(resp);
-    if (resp.error) sweetAlert("操作失败", resp.message, "error");
-    else {
-        $('#ec-modal-close').click();
-        swal("操作成功", "操作成功", "success")
+    var resp;
+    if (create) {
+        if (url) resp = request(url, "POST", data);
+        else resp = request("/user/api/" + VIEW_TYPE + "/create", "POST", data);
+        if (resp.error) sweetAlert("操作失败", resp.message, "error");
+        else {
+            $('#ec-modal-close').click();
+            swal("操作成功", "操作成功", "success")
+        }
+    } else {
+        data = "id=" + $('#ec-modal-form').attr("_id") + "&" + data;
+        console.log(data);
+        if (url) resp = request(url, "POST", data);
+        else resp = request("/user/api/" + VIEW_TYPE + "/modify", "POST", data);
+        if (resp.error) sweetAlert("操作失败", resp.message, "error");
+        else {
+            $('#ec-modal-close').click();
+            swal("操作成功", "操作成功", "success")
+        }
     }
+
 }
 
 function tableDataOnClickRow(row, element, filed) {
-    var data = {id:row.id};
+    var data = {id: row.id};
     var obj = getOne("/user/api/" + VIEW_TYPE + "/get", "GET", data);
+    $('#ec-modal-open').click();
+    $('#ec-modal-form').attr("_create", "false").attr("_id", row.id);
+    SetWebControls(obj);
+}
+
+function SetWebControls(data) {
+    $('#ec-modal-form').find("input,textarea").each(function () {
+        for (var key in data) {
+            if ($(this).attr("name") == key) $(this).val(data[key]);
+            else continue;
+
+            if ($(this).attr("type") == "checkbox") {
+                if (data[key] == true) $(this).attr("checked", "checked");
+                else $(this).removeAttr("checked");
+            }
+        }
+    });
 
 }
 
-$('#ec-modal-add-btn').click(function () {
-    $('#ec-modal-open').click();
-});
-
-
 $(document).ready(function () {
+
+    $('#ec-modal-add-btn').click(function () {
+        $('#ec-modal-form').attr("_create", "true");
+
+        $('#ec-modal-open').click();
+    });
+
     $('#ec-teacher-table').bootstrapTable({
         url: '/user/api/' + VIEW_TYPE + '/list',
         pagination: true,
