@@ -17,16 +17,19 @@ import java.util.Map;
 @DynamicInsert
 @Table(name = "ec_qrcode")
 public class Qrcode extends BaseEntity {
+    private static final long serialVersionUID = 2020046171356000616L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    private int type;
     private int sceneId;
     private boolean temp;
     private String attach;
     private String url;
     private Date refreshTime;
+    private int objType;
+    private int objId;
 
     private Date createTime;
     private Date modifyTime;
@@ -48,14 +51,6 @@ public class Qrcode extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public int getSceneId() {
@@ -119,5 +114,21 @@ public class Qrcode extends BaseEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getObjType() {
+        return objType;
+    }
+
+    public void setObjType(int objType) {
+        this.objType = objType;
+    }
+
+    public int getObjId() {
+        return objId;
+    }
+
+    public void setObjId(int objId) {
+        this.objId = objId;
     }
 }

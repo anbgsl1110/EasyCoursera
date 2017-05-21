@@ -10,6 +10,4 @@ import java.util.Map;
  * on 17/5/12.
  */
 public interface QrcodeDao extends BaseDao<Qrcode> {
-
-    Qrcode create(String name, int ttl, Map<String, String> attach);
 }
