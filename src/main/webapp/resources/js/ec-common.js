@@ -11,6 +11,11 @@ function request(url, type, data) {
             } else {
                 rtn = result;
             }
+        }, error: function () {
+            rtn = {
+                error: 1,
+                message: "请求不能被接受"
+            };
         },
         dataType: "json"
     });
@@ -27,6 +32,13 @@ function getOne(url, type, data) {
 function tableDataSerialize(resp) {
     if (resp.error) return [];
 
+    var items = resp.data.items;
+    for (var index in items) {
+        var item = items[index];
+        for (var filed in item) {
+            if (item[filed].length > 32) item[filed] = item[filed].substr(0, 32) + "..."
+        }
+    }
     return {
         rows: resp.data.items,
         total: resp.data.total
@@ -71,13 +83,23 @@ function tableDataOnClickRow(row, element, filed) {
     $('#ec-modal-open').click();
     $('#ec-modal-form').attr("_create", "false").attr("_id", row.id);
     SetWebControls(obj);
+    afterFill(row.id);
 }
 
 function SetWebControls(data) {
     $('#ec-modal-form').find("input,textarea").each(function () {
         for (var key in data) {
-            if ($(this).attr("name") == key) $(this).val(data[key]);
+
+            if ($(this).attr("name") == key) {
+                if ($(this).attr("type") != "radio") $(this).val(data[key]);
+            }
             else continue;
+
+            if ($(this).attr("type") == "radio") {
+                if (data[key] == $(this).val()) $(this).prop('checked', 'checked');
+                else $(this).removeAttr('checked');
+                continue;
+            }
 
             if ($(this).attr("type") == "checkbox") {
                 if (data[key] == true) $(this).attr("checked", "checked");

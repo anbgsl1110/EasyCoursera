@@ -5,7 +5,8 @@
             <ul class="nav">
                 <li><a id="ec-side-index" href="/"><i class="lnr lnr-home"></i> <span>主界面</span></a></li>
                 <li><a id="ec-side-course" href="/course" class=""><i class="lnr lnr-file-empty"></i> <span>课程管理</span></a></li>
-                <li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>Charts</span></a></li>
+                <li><a id="ec-side-examination" href="/examination" class=""><i class="lnr lnr-text-format"></i> <span>题库管理</span></a></li>
+                <li><a id="ec-side-tag" href="/tag" class=""><i class="lnr lnr-chart-bars"></i> <span>知识点管理</span></a></li>
                 <li><a href="panels.html" class=""><i class="lnr lnr-cog"></i> <span>Panels</span></a></li>
                 <li><a href="notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li>
                 <li>

@@ -23,8 +23,10 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +58,7 @@ public class BaseUserApi extends BaseController {
         Field[] paramFields = paramClazz.getDeclaredFields();
         Field[] entityFields = entityClazz.getDeclaredFields();
 
-        EcParamForeign foreign = paramClazz.getAnnotation(EcParamForeign.class);
-        if (foreign != null && !isForeignValid(foreign.target(), paramFields, param)) return ECResponse.notExist();
+        if (!isForeignValid(paramFields, param)) return ECResponse.notExist();
 
         Object entity = entityClazz.newInstance();
         setFiled(entityFields, paramFields, entity, param);
@@ -91,8 +92,8 @@ public class BaseUserApi extends BaseController {
 
         Field[] paramFields = paramClazz.getDeclaredFields();
         Field[] entityFields = entityClazz.getDeclaredFields();
-        EcParamForeign foreign = paramClazz.getAnnotation(EcParamForeign.class);
-        if (foreign != null && !isForeignValid(foreign.target(), paramFields, param)) return ECResponse.notExist();
+
+        if (!isForeignValid(paramFields, param)) return ECResponse.notExist();
 
         setFiled(entityFields, paramFields, entity, param);
         if (entity instanceof AuthorEntity) {
@@ -179,6 +180,8 @@ public class BaseUserApi extends BaseController {
 
             Object paramFieldProperty = paramField.get(param);
             if (paramFieldProperty != null) {
+                if (paramField.getAnnotation(Transient.class) != null) continue;
+                if (Modifier.isStatic(paramField.getModifiers())) continue;
                 criteria.add(Restrictions.eq(paramField.getName(), paramFieldProperty));
             }
         }
@@ -201,6 +204,7 @@ public class BaseUserApi extends BaseController {
             paramField.setAccessible(true);
             Object paramFieldProperty = paramField.get(param);
             if (paramFieldProperty != null) {
+                if (Modifier.isStatic(paramField.getModifiers())) continue;
                 fieldMap.get(paramField.getName()).set(entity, paramFieldProperty);
             }
         }
@@ -212,18 +216,21 @@ public class BaseUserApi extends BaseController {
         return ecSession.hasRole(ecParam.role());
     }
 
-    private boolean isForeignValid(Class targetClass, Field[] paramFields, Object param) throws IllegalAccessException {
-        Integer id = 0;
+    private boolean isForeignValid(Field[] paramFields, Object param) throws IllegalAccessException {
         for (Field paramField : paramFields) {
-            paramField.setAccessible(true);
-            if (paramField.getName().equals("id")) {
-                id = paramField.getInt("id");
-            }
-        }
-        BaseDao dao = SpringUtil.getDao(targetClass);
-        if (dao == null) return false;
+            EcParamForeign foreign = paramField.getAnnotation(EcParamForeign.class);
+            if (foreign == null) continue;
+            Class targetClass = foreign.target();
 
-        Object o = dao.getById(id);
-        return o != null;
+            paramField.setAccessible(true);
+            int id = paramField.getInt(param);
+
+            BaseDao dao = SpringUtil.getDao(targetClass);
+            if (dao == null) return false;
+
+            Object o = dao.getById(id);
+            if (o == null) return false;
+        }
+        return true;
     }
 }

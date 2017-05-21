@@ -19,6 +19,9 @@ public class ExaminationModifyParam  implements ModifyParam{
     private int id;
     @Length(max = 5000)
     private String content;
+
+    @Length(max = 5000)
+    private String answer;
     private Integer type;
 
     public int getId() {
@@ -43,5 +46,13 @@ public class ExaminationModifyParam  implements ModifyParam{
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }

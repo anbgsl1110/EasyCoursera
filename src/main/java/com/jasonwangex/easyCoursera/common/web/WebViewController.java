@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("")
-public class WebViewController extends BaseController{
+public class WebViewController extends BaseController {
 
     @RequestMapping(value = {"/index", ""}, method = RequestMethod.GET)
     public String index(ModelMap modelMap,
@@ -32,6 +32,21 @@ public class WebViewController extends BaseController{
         return "teacher/course";
     }
 
+    @RequestMapping(value = "/examination", method = RequestMethod.GET)
+    public String exam(ModelMap modelMap,
+                       HttpServletRequest request) {
+        setCommon(modelMap, request, "简课-题库管理", "examination");
+
+        return "teacher/examination";
+    }
+
+    @RequestMapping(value = "/tag", method = RequestMethod.GET)
+    public String tag(ModelMap modelMap,
+                      HttpServletRequest request) {
+        setCommon(modelMap, request, "简课-知识点管理", "tag");
+
+        return "teacher/tag";
+    }
 
 
     private void setCommon(ModelMap modelMap,
