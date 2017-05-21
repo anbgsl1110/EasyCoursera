@@ -53,6 +53,7 @@ public class LoginController extends BaseController {
         String redirect = WebUtil.decodeUrl(encodeRedirect);
         EcSession ecSession = EcSessionUtil.getSession(request);
         if (ecSession.isLogin()) {
+            if (token != null && token.length() >= 20) return "common/checked";
             CacheUtil.setCache("EC_LOGIN_" + token, ecSession, 60);
             return "forward:" + redirect;
         }
@@ -98,6 +99,7 @@ public class LoginController extends BaseController {
 
         EcSessionUtil.setSession(request, response, ecSession);
 
+        if (state != null && state.length() >= 20) return "common/checked";
         CacheUtil.setCache("EC_LOGIN_" + state, ecSession, 60);
         WebUtil.sendRedirect(response, redirect);
         return null;

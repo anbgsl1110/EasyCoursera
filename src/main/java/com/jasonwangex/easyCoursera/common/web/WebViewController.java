@@ -24,6 +24,12 @@ public class WebViewController extends BaseController {
         return "teacher/main";
     }
 
+    @RequestMapping(value = {"/checked"}, method = RequestMethod.GET)
+    public String checked(ModelMap modelMap,
+                        HttpServletRequest request) {
+        return "common/checked";
+    }
+
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public String course(ModelMap modelMap,
                          HttpServletRequest request) {
