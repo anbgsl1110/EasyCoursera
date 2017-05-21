@@ -41,6 +41,7 @@ public class WebViewController extends BaseController{
         EcSession session = EcSessionUtil.getSession(request);
 
         modelMap.put("title", title);
+        modelMap.put("userId", session.getUserId());
         modelMap.put("userName", session.getNickname());
         modelMap.put("userAvatar", session.getAvatar());
         modelMap.put("viewType", type);

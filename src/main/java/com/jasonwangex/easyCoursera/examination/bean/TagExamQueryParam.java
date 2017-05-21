@@ -23,10 +23,10 @@ public class TagExamQueryParam {
     private Integer tagId;
 
     @Range(min = 1)
-    private Integer page = 1;
+    private int page = 1;
 
     @Range(min = 1, max = 100)
-    private Integer size = 10;
+    private int size = 10;
 
     public Integer getId() {
         return id;
@@ -52,19 +52,19 @@ public class TagExamQueryParam {
         this.tagId = tagId;
     }
 
-    public Integer getPage() {
+    public int getPage() {
         return page;
     }
 
-    public void setPage(Integer page) {
+    public void setPage(int page) {
         this.page = page;
     }
 
-    public Integer getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(int size) {
         this.size = size;
     }
 }

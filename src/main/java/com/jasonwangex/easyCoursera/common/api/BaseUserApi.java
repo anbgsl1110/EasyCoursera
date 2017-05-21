@@ -153,6 +153,8 @@ public class BaseUserApi extends BaseController {
         if (!isAccessible(paramClazz, request)) return ECResponse.forbbiden();
 
         Object param = JsonUtil.toObject(paramClazz, JsonUtil.readParam(request));
+        if (param == null) param = paramClazz.newInstance();
+
         ValidationResult result = ValidationUtils.check(param);
         if (!result.isValid()) return ECResponse.packageError(result);
 

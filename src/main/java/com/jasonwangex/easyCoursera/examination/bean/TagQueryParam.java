@@ -15,6 +15,8 @@ import java.io.Serializable;
  */
 @EcParam(value = "tag", type = EcParamType.QUERY, role = UserRoleEnum.USER)
 public class TagQueryParam implements Serializable{
+    private static final long serialVersionUID = 7072658508676910666L;
+
     @Min(1)
     private Integer id;
 
@@ -28,10 +30,10 @@ public class TagQueryParam implements Serializable{
     private Integer creator;
 
     @Range(min = 1)
-    private Integer page = 1;
+    private int page = 1;
 
     @Range(min = 1, max = 100)
-    private Integer size = 10;
+    private int size = 10;
 
     public Integer getId() {
         return id;
@@ -65,19 +67,19 @@ public class TagQueryParam implements Serializable{
         this.creator = creator;
     }
 
-    public Integer getPage() {
+    public int getPage() {
         return page;
     }
 
-    public void setPage(Integer page) {
+    public void setPage(int page) {
         this.page = page;
     }
 
-    public Integer getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(int size) {
         this.size = size;
     }
 }

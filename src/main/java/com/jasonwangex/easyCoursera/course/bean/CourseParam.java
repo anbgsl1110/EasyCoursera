@@ -22,7 +22,7 @@ public class CourseParam {
     private String content;
 
     @NotNull
-    private Boolean needCheck;
+    private Boolean needCheck = false;
 
     @NotNull
     @Max(1)
