@@ -38,7 +38,7 @@ import java.util.Map;
 public class WechatCallbackController extends BaseController {
     private static ExpireKey expireKey = new DefaultExpireKey();
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "")
     public String check(HttpServletRequest request,
                         HttpServletResponse response,
                         @RequestParam(value = "signature", defaultValue = "") String signature,
