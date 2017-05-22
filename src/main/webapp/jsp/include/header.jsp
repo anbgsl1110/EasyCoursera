@@ -24,6 +24,10 @@
     <script src="/resources/js/sweetalert.min.js"></script>
     <script src="/resources/js/ec-common.js"></script>
 
+    <link rel="stylesheet" href="/resources/css/bootstrap-table.min.css">
+    <script src="/resources/js/bootstrap-table.min.js"></script>
+    <script src="/resources/js/bootstrap-table-zh-CN.js"></script>
+
     <script>
         var CONST_LANGUAGE = {
                 "sProcessing": "处理中...",

@@ -63,6 +63,7 @@ public class QrcodeServiceImpl implements QrcodeService {
         String url = QrcodeUtil.getTempQrcode(qrcode.getSceneId(), ttl);
         qrcode.setUrl(url);
         qrcode.setTtl(ttl);
+        qrcode.setRefreshTime(new Date());
 
         qrcodeDao.save(qrcode);
         return qrcode;

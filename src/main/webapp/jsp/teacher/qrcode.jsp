@@ -15,7 +15,7 @@
             <div class="modal-body">
                 <form id="ec-modal-form" class="form-inline">
                     <label for="ec-course-input-name">二维码名称：</label>
-                    <input type="text" id="ec-course-input-name" name="name">
+                    <input type="text" class="form-control"  id="ec-course-input-name" name="name">
                     <br><br>
 
                     <label>二维码有效期：</label>
@@ -32,7 +32,7 @@
                     <br><br>
 
                     <label>二维码绑定ID：</label>
-                    <input class="input-checkbox" type="text" name="objId"/>
+                    <input class="form-control" type="text" name="objId"/>
                     <br><br>
 
                     <label>二维码刷新时间：</label>
@@ -71,20 +71,18 @@
 </button>
 
 <script>
-    function afterFill(id, obj) {
+    function beforeFill(id, row) {
         $('#ec-qrcode-div').parent().css("display", "block");
         $('#ec-qrcode-div').html("");
         $('#ec-qrcode-div').qrcode({
             width: 140,
             height: 140,
-            text: obj.url
+            text: row.url
         });
 
-        $('#ec-qrcode-refresh-time').val(formatterDate(obj.refreshTime));
+        $('#ec-qrcode-refresh-time').val(formatterDate(row.refreshTime));
 
-
-        if (checkExpire()) {
-            $('#ec-modal-close').click();
+        if (checkExpire(row)) {
             swal({
                     title: "二维码已过期！",
                     text: "请输入新的有效期以刷新二维码",
@@ -107,11 +105,14 @@
 
                     if (data.error) sweetAlert("操作失败", resp.message, "error");
                     else {
-                        swal("操作成功", "操作成功", "success")
+                        SetWebControls(data[0]);
                         $('#ec-modal-open').click();
+                        swal("操作成功", "操作成功", "success");
                     }
                 });
+            return false;
         }
+        return true;
     }
 
     function customSubmitModal() {
@@ -144,9 +145,11 @@
 
     }
 
-    function checkExpire() {
-        var refresh = $('#ec-course-input-refreshTime').val();
-        var ttl = $('#ec-course-input-ttl').val() * 1000;
+    function checkExpire(row) {
+        if (row.url == "null" || row.url == "") return true;
+
+        var refresh = row.refreshTime;
+        var ttl = row.ttl * 1000;
         var now = new Date().getTime();
 
         return now > (refresh + ttl);
@@ -164,9 +167,14 @@
         if (data == 2) return '获取知识点';
         if (data == 3) return '知识点随机题目';
     }
+
+    function customRowStyleFunc(row, index) {
+        if(!checkExpire(row)) return {};
+
+        return {classes:"danger"};
+    }
+
     var columns = [{
-        checkbox: false
-    }, {
         field: 'id',
         title: '二维码 ID'
     }, {
@@ -193,10 +201,6 @@
 <div id="wrapper">
     <%@include file="/jsp/include/nav.jsp" %>
     <%@include file="/jsp/include/leftside.jsp" %>
-    <link rel="stylesheet" href="/resources/dist/bootstrap-table.css">
-    <script src="/resources/dist/bootstrap-table.js"></script>
-    <script src="/resources/dist/locale/bootstrap-table-zh-CN.js"></script>
-
 
     <div class="main">
         <div class="main-content">
@@ -212,14 +216,13 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">二维码管理</h3>
+                        <p>(以下标红为已过期二维码，点击可刷新)</p>
                     </div>
                     <div class="panel-body">
                         <table id="ec-teacher-table">
                         </table>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

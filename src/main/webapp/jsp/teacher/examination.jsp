@@ -75,10 +75,6 @@
 <div id="wrapper">
     <%@include file="/jsp/include/nav.jsp" %>
     <%@include file="/jsp/include/leftside.jsp" %>
-    <link rel="stylesheet" href="/resources/dist/bootstrap-table.css">
-    <script src="/resources/dist/bootstrap-table.js"></script>
-    <script src="/resources/dist/locale/bootstrap-table-zh-CN.js"></script>
-
 
     <div class="main">
         <div class="main-content">
@@ -151,8 +147,6 @@
         });
 
         var columns = [{
-            checkbox: false
-        }, {
             field: 'id',
             title: '题目 ID'
         }, {

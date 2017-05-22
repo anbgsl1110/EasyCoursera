@@ -41,10 +41,6 @@
 <div id="wrapper">
     <%@include file="/jsp/include/nav.jsp" %>
     <%@include file="/jsp/include/leftside.jsp" %>
-    <link rel="stylesheet" href="/resources/css/bootstrap-table.min.css">
-    <script src="/resources/js/bootstrap-table.min.js"></script>
-    <script src="/resources/js/bootstrap-table-zh-CN.js"></script>
-
 
     <div class="main">
         <div class="main-content">
@@ -78,8 +74,6 @@
                     }
 
                     var columns = [{
-                        checkbox: false
-                    }, {
                         field: 'id',
                         title: '知识点 ID'
                     }, {

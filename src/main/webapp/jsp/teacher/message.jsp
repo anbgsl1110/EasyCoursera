@@ -34,15 +34,9 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
-<button id="ec-modal-open" type="button" style="display: none" class="btn btn-primary btn-lg" data-toggle="modal"
-        data-target="#ec-modal">
-</button>
-
 <div id="wrapper">
     <%@include file="/jsp/include/nav.jsp" %>
     <%@include file="/jsp/include/leftside.jsp" %>
-
 
     <div class="main">
         <div class="main-content">
@@ -74,7 +68,7 @@
                         }
                     }
 
-                    var columns = [{
+                    var columns = [{{
                         field: 'id',
                         title: '课程 ID'
                     }, {

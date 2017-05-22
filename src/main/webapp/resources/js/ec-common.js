@@ -65,7 +65,6 @@ function submitModal(url) {
         }
     } else {
         data = "id=" + $('#ec-modal-form').attr("_id") + "&" + data;
-        console.log(data);
         if (url) resp = request(url, "POST", data);
         else resp = request("/user/api/" + VIEW_TYPE + "/modify", "POST", data);
         if (resp.error) sweetAlert("操作失败", resp.message, "error");
@@ -80,14 +79,20 @@ function submitModal(url) {
 function tableDataOnClickRow(row, element, filed) {
     var data = {id: row.id};
     var obj = getOne("/user/api/" + VIEW_TYPE + "/get", "GET", data);
+
+    if ((typeof beforeFill) != 'undefined') {
+       if (!beforeFill(row.id, obj)) return;
+    }
+
     $('#ec-modal-open').click();
-    $('#ec-modal-form').attr("_create", "false").attr("_id", row.id);
     SetWebControls(obj);
+
     if ((typeof afterFill) != 'undefined') afterFill(row.id, obj);
 }
 
 function SetWebControls(data) {
-    $('#ec-modal-form').find("input,textarea,select").each(function () {
+    $('#ec-modal-form').attr("_create", "false").attr("_id", data.id)
+        .find("input,textarea,select").each(function () {
         for (var key in data) {
 
             if ($(this).attr("name") == key) {
@@ -126,7 +131,11 @@ function formatterBoolean(data) {
     else return "-";
 }
 
+function rowStyleFunc(row, index) {
+    if ((typeof customRowStyleFunc) == 'undefined') return {};
 
+    return customRowStyleFunc(row, index);
+}
 
 $(document).ready(function () {
     if ((typeof tableDataQuery) == 'undefined') return;
@@ -143,12 +152,15 @@ $(document).ready(function () {
         sidePagination: "server",
         showRefresh: true,
         toolbar: '#toolbar',
+        height: 480,
         responseHandler: tableDataSerialize,
         queryParams: tableDataQuery,
         onClickRow: tableDataOnClickRow,
         pageNumber: 1,
-        pageSize: 16,
+        pageSize: 8,
         escape:true,
-        columns: columns
+        columns: columns,
+        rowStyle: rowStyleFunc
     });
+
 });
