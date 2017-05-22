@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,10 +56,14 @@ public class WechatCallbackController extends BaseController {
 
         if (!signature.toLowerCase().equals(WechatUtil.sign(params))) return null;
 
-        if (StringUtils.isNotBlank(echostr)) return echostr;
-
         InputStream inputStream = request.getInputStream();
         OutputStream outputStream = response.getOutputStream();
+
+        if (StringUtils.isNotBlank(echostr)) {
+            outputStreamWrite(outputStream, echostr);
+            return null;
+        }
+
         if (inputStream != null) {
             //转换XML
             EventMessage eventMessage = XMLConverUtil.convertToObject(EventMessage.class, inputStream);
@@ -85,6 +90,24 @@ public class WechatCallbackController extends BaseController {
             return null;
         }
         return "";
+    }
+
+    /**
+     * 数据流输出
+     *
+     * @param outputStream
+     * @param text
+     * @return
+     */
+    private boolean outputStreamWrite(OutputStream outputStream, String text) throws UnsupportedEncodingException {
+        try {
+            outputStream.write(text.getBytes("utf-8"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
