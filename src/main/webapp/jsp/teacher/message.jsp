@@ -91,7 +91,8 @@
     }
 
     function customTableDataOnClickRow(row, element, filed) {
-        if (!row.read) request("/user/api/message/read", "POST", {id: row.id});
+        element.removeClass("warning");
+        if (!row.msgRead) request("/user/api/message/read", "POST", {id: row.id});
 
         $('#ec-modal-show').modal('show');
         fillData($('#ec-modal-show-form'), row);
@@ -101,13 +102,13 @@
     }
     
     function customRowStyleFunc(row, index) {
-        if (!row.read) return {classes:"warning"};
+        if (!row.msgRead) return {classes:"warning"};
         return {};
     }
 
     var columns = [{
         field: 'id',
-        title: '消息 ID'
+        visible: false
     }, {
         field: 'type',
         title: '消息类型',
@@ -116,7 +117,7 @@
         field: 'content',
         title: '消息内容'
     }, {
-        field: 'read',
+        field: 'msgRead',
         visible: false
     }, {
         field: 'createTime',

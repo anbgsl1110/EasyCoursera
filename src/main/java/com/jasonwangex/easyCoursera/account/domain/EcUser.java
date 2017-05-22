@@ -28,6 +28,7 @@ public class EcUser extends BaseEntity {
     private String nickname;
     private String avatar;
     private int gender;
+    private int messageCount;
     private String userIp;
     private Date lastLogin;
     private Date activeTime;
@@ -215,5 +216,13 @@ public class EcUser extends BaseEntity {
         ecUser.addRoleId(2);
         System.out.println(ecUser.getRoleIds());
 
+    }
+
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
     }
 }

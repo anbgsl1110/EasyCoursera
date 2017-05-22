@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.message.api;
 
+import com.jasonwangex.easyCoursera.account.service.EcUserService;
 import com.jasonwangex.easyCoursera.auth.annonation.NeedRole;
 import com.jasonwangex.easyCoursera.auth.bean.EcSession;
 import com.jasonwangex.easyCoursera.auth.enmus.UserRoleEnum;
@@ -27,6 +28,8 @@ import javax.annotation.Resource;
 public class MessageUserApi extends BaseController {
     @Resource
     private MessageDao messageDao;
+    @Resource
+    private EcUserService ecUserService;
 
     @Resource
     private MessageService messageService;
@@ -49,8 +52,9 @@ public class MessageUserApi extends BaseController {
         EcSession session = EcSessionUtil.getSession();
 
         if (message == null || message.getUserId() != session.getUserId()) return ECResponse.notExist();
-        messageDao.updateField("read", 1, id);
-        message.setRead(true);
+        messageDao.updateField("msg_read", 1, id);
+        ecUserService.syncMessage(session.getUserId());
+        message.setMsgRead(true);
         return ECResponse.items(message);
     }
 
@@ -61,6 +65,7 @@ public class MessageUserApi extends BaseController {
         EcSession session = EcSessionUtil.getSession();
 
         Message message = messageService.send(session.getUserId(), target, content, type);
+        ecUserService.syncMessage(target);
         return ECResponse.items(message);
     }
 

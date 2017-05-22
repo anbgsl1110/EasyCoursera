@@ -13,4 +13,6 @@ public interface EcUserService {
     EcUser create(User ecUser, boolean login, String userIp);
 
     EcUser changeRole(int userId, int roldId, boolean delete);
+
+    void syncMessage(int userId);
 }

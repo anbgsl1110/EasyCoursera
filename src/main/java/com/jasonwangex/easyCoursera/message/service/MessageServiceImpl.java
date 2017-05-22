@@ -27,7 +27,7 @@ public class MessageServiceImpl implements MessageService {
         Message message = new Message();
         message.setCreator(userId);
         message.setUserId(target);
-        message.setType(type);
+        message.setType(1);
         message.setContent(content);
         messageDao.save(message);
 

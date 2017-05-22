@@ -26,7 +26,7 @@ public class Message extends BaseEntity{
     private int type;
     private String uri;
     private String content;
-    private boolean read;
+    private boolean msgRead;
 
     private Date createTime;
     private Date modifyTime;
@@ -84,12 +84,12 @@ public class Message extends BaseEntity{
         this.content = content;
     }
 
-    public boolean isRead() {
-        return read;
+    public boolean isMsgRead() {
+        return msgRead;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setMsgRead(boolean msgRead) {
+        this.msgRead = msgRead;
     }
 
     @Override

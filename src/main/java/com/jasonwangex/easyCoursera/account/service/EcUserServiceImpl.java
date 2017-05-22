@@ -3,6 +3,7 @@ package com.jasonwangex.easyCoursera.account.service;
 import com.jasonwangex.easyCoursera.account.dao.EcUserDao;
 import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.common.bean.Wrapper;
+import com.jasonwangex.easyCoursera.message.dao.MessageDao;
 import com.jasonwangex.easyCoursera.utils.LockUtil;
 import org.springframework.stereotype.Service;
 import weixin.popular.bean.user.User;
@@ -58,5 +59,12 @@ public class EcUserServiceImpl implements EcUserService {
         });
 
         return wrapper.get();
+    }
+
+    @Override
+    public void syncMessage(int userId) {
+        String sql = "UPDATE ec_user set message_count=(SELECT count(*) from ec_message where user_id=? AND msg_read=0) where id=?";
+
+        ecUserDao.update(sql, userId, userId);
     }
 }
