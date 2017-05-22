@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.callback.web;
 
 import com.jasonwangex.easyCoursera.common.web.BaseController;
 import com.jasonwangex.easyCoursera.utils.CacheUtil;
+import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import com.jasonwangex.easyCoursera.utils.WechatUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +48,10 @@ public class WechatCallbackController extends BaseController {
         params.put("timestamp", String.valueOf(timestamp));
         params.put("nonce", nonce);
         params.put("token", token);
+
+        CacheUtil.setCache("params", JsonUtil.toString(params));
+        CacheUtil.setCache("signature", signature);
+        CacheUtil.setCache("echostr", echostr);
 
         if (!signature.toLowerCase().equals(WechatUtil.sign(params))) return null;
 
