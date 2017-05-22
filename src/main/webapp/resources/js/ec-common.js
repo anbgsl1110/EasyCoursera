@@ -69,10 +69,14 @@ function submitModal(url) {
         if (resp.error) sweetAlert("操作失败", resp.message, "error");
         else {
             $('#ec-modal-close').click();
+            updateRow($('#ec-teacher-table'), resp[0]);
             swal("操作成功", "操作成功", "success")
         }
     }
+}
 
+function updateRow(obj, data) {
+    obj.bootstrapTable('updateRow', {index: data.id, row: data});
 }
 
 function fillData(formObj, data) {
@@ -164,6 +168,7 @@ $(document).ready(function () {
         showRefresh: true,
         toolbar: '#toolbar',
         height: 480,
+        idField: 'id',
         responseHandler: tableDataSerialize,
         queryParams: tableDataQuery,
         onClickRow: tableDataOnClickRow,

@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.answer.dao;
 
+import com.jasonwangex.easyCoursera.common.bean.PageBean;
 import com.jasonwangex.easyCoursera.common.dao.BaseDao;
 import com.jasonwangex.easyCoursera.answer.domain.Answer;
 
@@ -13,4 +14,5 @@ public interface AnswerDao extends BaseDao<Answer> {
 
     Answer getOrRefresh(int userId, int examId, String content);
 
+    PageBean<Answer> getPage(int teacherId, int page, int size);
 }

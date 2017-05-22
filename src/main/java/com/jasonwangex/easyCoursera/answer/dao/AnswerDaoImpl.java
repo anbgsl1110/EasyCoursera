@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.answer.dao;
 
+import com.jasonwangex.easyCoursera.common.bean.PageBean;
 import com.jasonwangex.easyCoursera.common.bean.Wrapper;
 import com.jasonwangex.easyCoursera.common.dao.BaseDaoImpl;
 import com.jasonwangex.easyCoursera.answer.domain.Answer;
@@ -40,5 +41,12 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements AnswerDao {
         });
 
         return wrapper.get();
+    }
+
+    @Override
+    public PageBean<Answer> getPage(int teacherId, int page, int size) {
+        List<Criterion> criteria = new ArrayList<>();
+
+        return getPage(criteria, null, page, size);
     }
 }

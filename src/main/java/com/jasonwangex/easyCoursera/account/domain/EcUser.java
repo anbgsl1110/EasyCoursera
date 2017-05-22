@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @DynamicInsert
 @Table(name = "ec_user")
 public class EcUser extends BaseEntity {
+    private static final long serialVersionUID = -6690216751143928255L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

@@ -17,7 +17,7 @@
         <div id="navbar-menu">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="/message" class="dropdown-toggle icon-menu" data-toggle="dropdown">
+                    <a href="/message" class="dropdown-toggle icon-menu">
                         <i class="lnr lnr-alarm"></i>
                         <span id="ec-data-user-message-count" class="badge bg-danger"></span>
                     </a>

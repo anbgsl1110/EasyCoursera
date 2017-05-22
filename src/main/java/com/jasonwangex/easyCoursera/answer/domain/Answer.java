@@ -16,6 +16,8 @@ import java.util.Date;
 @EcDomain("answer")
 @Table(name = "ec_answer")
 public class Answer extends BaseEntity {
+    private static final long serialVersionUID = 8150041394758148410L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -27,6 +29,27 @@ public class Answer extends BaseEntity {
     private boolean judge;
     private Date createTime;
     private Date modifyTime;
+
+    @Transient
+    private String userName;
+    @Transient
+    private String examination;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getExamination() {
+        return examination;
+    }
+
+    public void setExamination(String examination) {
+        this.examination = examination;
+    }
 
     @Override
     public Integer getId() {
