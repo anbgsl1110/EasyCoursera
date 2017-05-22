@@ -158,6 +158,10 @@
                     }, {
                         field: 'answer',
                         title: '参考答案'
+                    },{
+                        field: 'createTime',
+                        title: '创建时间',
+                        formatter:formatterDate
                     }];
 
                 </script>

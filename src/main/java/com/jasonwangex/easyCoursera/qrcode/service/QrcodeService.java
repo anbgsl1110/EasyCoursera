@@ -11,4 +11,8 @@ import java.util.Map;
 public interface QrcodeService {
 
     Qrcode create(String name, int ttl, int objType, int objId, Map<String, String> attach);
+
+    Qrcode update(int id, String name, int objType, int objId);
+
+    Qrcode refresh(int id, int ttl);
 }

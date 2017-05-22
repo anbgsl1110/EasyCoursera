@@ -51,5 +51,6 @@
             };
         var VIEW_TYPE = "${viewType}";
         var thisUserId = "${userId}";
+        var LIST_URL = "${listUrl}"
     </script>
 </head>

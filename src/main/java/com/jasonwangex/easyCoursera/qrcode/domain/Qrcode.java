@@ -1,5 +1,6 @@
 package com.jasonwangex.easyCoursera.qrcode.domain;
 
+import com.jasonwangex.easyCoursera.common.annotation.EcDomain;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
 import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import org.hibernate.annotations.DynamicInsert;
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 @Entity
 @DynamicInsert
+@EcDomain("qrcode")
 @Table(name = "ec_qrcode")
 public class Qrcode extends BaseEntity {
     private static final long serialVersionUID = 2020046171356000616L;
@@ -30,6 +32,7 @@ public class Qrcode extends BaseEntity {
     private Date refreshTime;
     private int objType;
     private int objId;
+    private int ttl;
 
     private Date createTime;
     private Date modifyTime;
@@ -130,5 +133,13 @@ public class Qrcode extends BaseEntity {
 
     public void setObjId(int objId) {
         this.objId = objId;
+    }
+
+    public int getTtl() {
+        return ttl;
+    }
+
+    public void setTtl(int ttl) {
+        this.ttl = ttl;
     }
 }

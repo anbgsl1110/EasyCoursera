@@ -69,10 +69,6 @@
 
                 <script>
 
-                    function afterFill(id) {
-
-                    }
-
                     function tableDataQuery(param) {
                         return {
                             size: param.limit,

@@ -26,7 +26,7 @@ public class WebViewController extends BaseController {
 
     @RequestMapping(value = {"/checked"}, method = RequestMethod.GET)
     public String checked(ModelMap modelMap,
-                        HttpServletRequest request) {
+                          HttpServletRequest request) {
         return "common/checked";
     }
 
@@ -54,6 +54,15 @@ public class WebViewController extends BaseController {
         return "teacher/tag";
     }
 
+    @RequestMapping(value = "/qrcode", method = RequestMethod.GET)
+    public String qrcode(ModelMap modelMap,
+                         HttpServletRequest request) {
+        setCommon(modelMap, request, "简课-二维码管理", "qrcode");
+
+        modelMap.put("listUrl", "/user/api/qrcode/page");
+        return "teacher/qrcode";
+    }
+
 
     private void setCommon(ModelMap modelMap,
                            HttpServletRequest request,
@@ -66,6 +75,7 @@ public class WebViewController extends BaseController {
         modelMap.put("userName", session.getNickname());
         modelMap.put("userAvatar", session.getAvatar());
         modelMap.put("viewType", type);
+        modelMap.put("listUrl", "/user/api/" + type + "/list");
     }
 
 }

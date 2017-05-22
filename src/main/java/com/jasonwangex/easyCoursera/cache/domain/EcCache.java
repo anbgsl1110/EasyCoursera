@@ -80,6 +80,6 @@ public class EcCache extends BaseEntity {
 
     public boolean isExpire() {
 
-        return ttl == 0 || this.modifyTime.getTime() + ttl * 1000L < System.currentTimeMillis();
+        return ttl != 0 && this.modifyTime.getTime() + ttl * 1000L < System.currentTimeMillis();
     }
 }

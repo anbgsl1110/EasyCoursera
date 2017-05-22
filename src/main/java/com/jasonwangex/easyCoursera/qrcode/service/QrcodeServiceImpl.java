@@ -36,6 +36,33 @@ public class QrcodeServiceImpl implements QrcodeService {
         qrcode.setSceneId(sceneId);
         qrcode.setObjType(objType);
         qrcode.setObjId(objId);
+        qrcode.setTtl(ttl);
+
+        qrcodeDao.save(qrcode);
+        return qrcode;
+    }
+
+    @Override
+    public Qrcode update(int id, String name, int objType, int objId) {
+        Qrcode qrcode = qrcodeDao.getById(id);
+        if (qrcode == null) return null;
+
+        qrcode.setName(name);
+        qrcode.setObjId(objId);
+        qrcode.setObjType(objType);
+
+        qrcodeDao.save(qrcode);
+        return qrcode;
+    }
+
+    @Override
+    public Qrcode refresh(int id, int ttl) {
+        Qrcode qrcode = qrcodeDao.getById(id);
+
+        if (qrcode == null) return null;
+        String url = QrcodeUtil.getTempQrcode(qrcode.getSceneId(), ttl);
+        qrcode.setUrl(url);
+        qrcode.setTtl(ttl);
 
         qrcodeDao.save(qrcode);
         return qrcode;

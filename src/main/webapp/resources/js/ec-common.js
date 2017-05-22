@@ -83,11 +83,12 @@ function tableDataOnClickRow(row, element, filed) {
     $('#ec-modal-open').click();
     $('#ec-modal-form').attr("_create", "false").attr("_id", row.id);
     SetWebControls(obj);
-    afterFill(row.id);
+    console.log((typeof afterFill));
+    if ((typeof afterFill) != 'undefined') afterFill(row.id, obj);
 }
 
 function SetWebControls(data) {
-    $('#ec-modal-form').find("input,textarea").each(function () {
+    $('#ec-modal-form').find("input,textarea,select").each(function () {
         for (var key in data) {
 
             if ($(this).attr("name") == key) {
@@ -101,16 +102,35 @@ function SetWebControls(data) {
                 continue;
             }
 
+            if ($(this).hasClass("input-select")) {
+                if (data[key] == $(this).val()) $(this).prop('checked', 'checked');
+                else $(this).removeAttr('checked');
+                continue;
+            }
+
             if ($(this).attr("type") == "checkbox") {
                 if (data[key] == true) $(this).attr("checked", "checked");
                 else $(this).removeAttr("checked");
             }
         }
     });
-
 }
 
+function formatterDate(data) {
+    var time = new Date(data);
+    return time.toLocaleDateString()+ " " + time.toLocaleTimeString();
+}
+
+
+function formatterBoolean(data) {
+    if (data) return "是";
+    else return "-";
+}
+
+
+
 $(document).ready(function () {
+    if ((typeof tableDataQuery) == 'undefined') return;
 
     $('#ec-modal-add-btn').click(function () {
         $('#ec-modal-form').attr("_create", "true");
@@ -119,7 +139,7 @@ $(document).ready(function () {
     });
 
     $('#ec-teacher-table').bootstrapTable({
-        url: '/user/api/' + VIEW_TYPE + '/list',
+        url: LIST_URL,
         pagination: true,
         sidePagination: "server",
         showRefresh: true,

@@ -69,10 +69,6 @@
                 </div>
 
                 <script>
-                    function afterFill(id) {
-
-                    }
-
                     function tableDataQuery(param) {
                         return {
                             size: param.limit,
@@ -94,7 +90,12 @@
                         title: '已选人数'
                     }, {
                         field: 'needCheck',
-                        title: '是否需要审核'
+                        title: '是否需要审核',
+                        formatter:formatterBoolean
+                    }, {
+                        field: 'createTime',
+                        title: '创建时间',
+                        formatter:formatterDate
                     }];
 
                 </script>

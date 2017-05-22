@@ -7,7 +7,7 @@
                 <li><a id="ec-side-course" href="/course" class=""><i class="lnr lnr-file-empty"></i> <span>课程管理</span></a></li>
                 <li><a id="ec-side-examination" href="/examination" class=""><i class="lnr lnr-text-format"></i> <span>题库管理</span></a></li>
                 <li><a id="ec-side-tag" href="/tag" class=""><i class="lnr lnr-chart-bars"></i> <span>知识点管理</span></a></li>
-                <li><a href="panels.html" class=""><i class="lnr lnr-cog"></i> <span>Panels</span></a></li>
+                <li><a id="ec-side-qrcode" href="/qrcode" class=""><i class="lnr lnr-dice"></i> <span>二维码管理</span></a></li>
                 <li><a href="notifications.html" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li>
                 <li>
                     <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
