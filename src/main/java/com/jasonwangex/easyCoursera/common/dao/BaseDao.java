@@ -49,7 +49,7 @@ public interface BaseDao<T extends BaseEntity> {
 
     int update(String query, Object... objects);
 
-    int updateField(String field, String value, int id);
+    int updateField(String field, Object value, int id);
 
     int insert(String query, Object... objects);
 

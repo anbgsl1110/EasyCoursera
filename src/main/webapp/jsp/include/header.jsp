@@ -57,4 +57,10 @@
         var thisUserId = "${userId}";
         var LIST_URL = "${listUrl}"
     </script>
+
+    <style>
+        label {
+            width: 130px;
+        }
+    </style>
 </head>

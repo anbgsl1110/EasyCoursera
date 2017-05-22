@@ -19,7 +19,7 @@
                     <br><br>
 
                     <label>二维码有效期：</label>
-                    <input id="ec-course-input-ttl" class="form-control" type="text" name="ttl" placeholder="单位，秒"/>
+                    <input id="ec-course-input-ttl" class="form-control" type="text" name="ttl" placeholder="单位(秒)，默认为 3 天"/>
                     (秒)
                     <br><br>
 
@@ -35,7 +35,7 @@
                     <input class="form-control" type="text" name="objId"/>
                     <br><br>
 
-                    <label>二维码刷新时间：</label>
+                    <label>二维码失效时间：</label>
                     <input id="ec-qrcode-refresh-time" class="form-control" type="text" disabled/>
                     <br><br>
 
@@ -44,17 +44,6 @@
                         <br>
                         <label id="ec-qrcode-div"></label>
                     </div>
-
-                    <style>
-                        label {
-                            width: 130px;
-                        }
-                    </style>
-
-                    <script>
-
-
-                    </script>
                 </form>
             </div>
             <div class="modal-footer">
@@ -80,7 +69,7 @@
             text: row.url
         });
 
-        $('#ec-qrcode-refresh-time').val(formatterDate(row.refreshTime));
+        $('#ec-qrcode-refresh-time').val(formatterDate(row.refreshTime + row.ttl * 1000));
 
         if (checkExpire(row)) {
             swal({
@@ -174,6 +163,10 @@
         return {classes:"danger"};
     }
 
+    function formatterQrcodeDate(data, row) {
+        return formatterDate(data + row.ttl * 1000)
+    }
+
     var columns = [{
         field: 'id',
         title: '二维码 ID'
@@ -185,8 +178,8 @@
         title: '有效期'
     }, {
         field: 'refreshTime',
-        title: '上次刷新时间',
-        formatter: formatterDate
+        title: '失效时间',
+        formatter: formatterQrcodeDate
     }, {
         field: 'objType',
         title: '绑定类型',

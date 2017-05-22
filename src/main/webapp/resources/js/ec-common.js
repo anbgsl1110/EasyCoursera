@@ -21,10 +21,9 @@ function request(url, type, data) {
     });
     return rtn;
 }
-var log;
+
 function getOne(url, type, data) {
     var rtn = request(url, type, data);
-    log = rtn;
     if (rtn.length > 0) return rtn[0];
     return 0;
 }
@@ -76,23 +75,8 @@ function submitModal(url) {
 
 }
 
-function tableDataOnClickRow(row, element, filed) {
-    var data = {id: row.id};
-    var obj = getOne("/user/api/" + VIEW_TYPE + "/get", "GET", data);
-
-    if ((typeof beforeFill) != 'undefined') {
-       if (!beforeFill(row.id, obj)) return;
-    }
-
-    $('#ec-modal-open').click();
-    SetWebControls(obj);
-
-    if ((typeof afterFill) != 'undefined') afterFill(row.id, obj);
-}
-
-function SetWebControls(data) {
-    $('#ec-modal-form').attr("_create", "false").attr("_id", data.id)
-        .find("input,textarea,select").each(function () {
+function fillData(formObj, data) {
+    formObj.find("input,textarea,select").each(function () {
         for (var key in data) {
 
             if ($(this).attr("name") == key) {
@@ -120,9 +104,32 @@ function SetWebControls(data) {
     });
 }
 
+function tableDataOnClickRow(row, element, filed) {
+    if ((typeof customTableDataOnClickRow) != 'undefined') {
+        return customTableDataOnClickRow(row, element, filed);
+    }
+
+    var data = {id: row.id};
+    var obj = getOne("/user/api/" + VIEW_TYPE + "/get", "GET", data);
+
+    if ((typeof beforeFill) != 'undefined') {
+        if (!beforeFill(row.id, obj)) return;
+    }
+
+    $('#ec-modal-open').click();
+    SetWebControls(obj);
+
+    if ((typeof afterFill) != 'undefined') afterFill(row.id, obj);
+}
+
+function SetWebControls(data) {
+    var obj = $('#ec-modal-form').attr("_create", "false").attr("_id", data.id);
+    fillData(obj, data);
+}
+
 function formatterDate(data) {
     var time = new Date(data);
-    return time.toLocaleDateString()+ " " + time.toLocaleTimeString();
+    return time.toLocaleDateString() + " " + time.toLocaleTimeString();
 }
 
 
@@ -141,9 +148,13 @@ $(document).ready(function () {
     if ((typeof tableDataQuery) == 'undefined') return;
 
     $('#ec-modal-add-btn').click(function () {
-        $('#ec-modal-form').attr("_create", "true");
+        $('#ec-modal').modal('show');
 
-        $('#ec-modal-open').click();
+        $('#ec-modal-form').attr("_create", "true").attr("_id", 0)
+            .find("input,textarea,select").each(function () {
+            if ($(this).attr("type") == "text" || $(this).prop("tagName") == "TEXTAREA") $(this).val("")
+        });
+
     });
 
     $('#ec-teacher-table').bootstrapTable({
@@ -158,7 +169,7 @@ $(document).ready(function () {
         onClickRow: tableDataOnClickRow,
         pageNumber: 1,
         pageSize: 8,
-        escape:true,
+        escape: true,
         columns: columns,
         rowStyle: rowStyleFunc
     });

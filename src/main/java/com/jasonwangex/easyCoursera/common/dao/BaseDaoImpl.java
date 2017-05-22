@@ -202,8 +202,8 @@ public class BaseDaoImpl<T extends BaseEntity> extends HibernateDaoSupport imple
     }
 
     @Override
-    public int updateField(String field, String value, int id) {
-        String sql = "UPDATE " + getThisTable() + " SET " + field + "=? WHERE id=?";
+    public int updateField(String field, Object value, int id) {
+        String sql = "UPDATE `" + getThisTable() + "` SET `" + field + "` = ? WHERE id=?";
         return update(sql, value, id);
     }
 

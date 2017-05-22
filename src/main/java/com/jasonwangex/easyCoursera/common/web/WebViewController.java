@@ -64,6 +64,15 @@ public class WebViewController extends BaseController {
     }
 
 
+    @RequestMapping(value = "/message", method = RequestMethod.GET)
+    public String message(ModelMap modelMap,
+                         HttpServletRequest request) {
+        setCommon(modelMap, request, "简课-消息管理", "message");
+
+        modelMap.put("listUrl", "/user/api/message/page");
+        return "teacher/message";
+    }
+
     private void setCommon(ModelMap modelMap,
                            HttpServletRequest request,
                            String title,

@@ -35,7 +35,7 @@
                 <prop key="current_session_context_class">thread</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <prop key="hibernate.id.new_generator_mappings">false</prop>
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
 
