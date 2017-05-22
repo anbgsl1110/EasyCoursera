@@ -3,29 +3,23 @@ package com.jasonwangex.easyCoursera.callback.web;
 import com.jasonwangex.easyCoursera.common.web.BaseController;
 import com.jasonwangex.easyCoursera.utils.CacheUtil;
 import com.jasonwangex.easyCoursera.utils.WechatUtil;
-import com.jasonwangex.easyCoursera.wechat.bean.WechatClient;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import weixin.popular.bean.message.EventMessage;
 import weixin.popular.bean.xmlmessage.XMLMessage;
 import weixin.popular.bean.xmlmessage.XMLTextMessage;
 import weixin.popular.support.ExpireKey;
 import weixin.popular.support.expirekey.DefaultExpireKey;
-import weixin.popular.util.SignatureUtil;
 import weixin.popular.util.XMLConverUtil;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +30,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/wechat/callback")
 public class WechatCallbackController extends BaseController {
+    @Value("${weixin.token}")
+    private String token;
+
     private static ExpireKey expireKey = new DefaultExpireKey();
 
     @RequestMapping(value = "")
@@ -49,9 +46,9 @@ public class WechatCallbackController extends BaseController {
 
         params.put("timestamp", String.valueOf(timestamp));
         params.put("nonce", nonce);
-        params.put("echostr", echostr);
+        params.put("token", token);
 
-        if (!signature.equals(WechatUtil.sign(params))) return null;
+        if (!signature.toLowerCase().equals(WechatUtil.sign(params))) return null;
 
         if (StringUtils.isNotBlank(echostr)) return echostr;
 
