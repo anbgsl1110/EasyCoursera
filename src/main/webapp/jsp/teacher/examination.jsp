@@ -18,12 +18,12 @@
                     <br><br>
 
                     <label for="ec-exam-input-content">题目内容：</label>
-                    <textarea class="form-control" id="ec-exam-input-content" rows="10" cols="70"
+                    <textarea class="form-control" id="ec-exam-input-content" rows="8" cols="75"
                               name="content"></textarea>
                     <br><br>
 
                     <label for="ec-exam-input-answer">参考答案：</label>
-                    <textarea class="form-control" id="ec-exam-input-answer" rows="10" cols="70"
+                    <textarea class="form-control" id="ec-exam-input-answer" rows="8" cols="75"
                               name="answer"></textarea>
 
                     <label>已绑定知识点：</label>
@@ -104,70 +104,69 @@
                         </table>
                     </div>
                 </div>
-
-                <script>
-                    function tableDataQuery(param) {
-                        return {
-                            size: param.limit,
-                            page: ((param.offset / param.limit) + 1),
-                            creator: thisUserId
-                        }
-                    }
-
-                    function submitModal2() {
-                        var data = $('#ec-modal-form-2').serialize();
-
-                        var resp = request("/user/api/tagexam/create", "POST", data);
-                        if (resp.error) sweetAlert("操作失败", resp.message, "error");
-                        else {
-                            $('#ec-modal-close').click();
-                            swal("操作成功", "操作成功", "success");
-                            $('#ec-modal-close-2').click();
-                        }
-                    }
-
-                    function afterFill(id) {
-                        var param = {
-                            examId: id
-                        };
-                        var data = request("/user/api/tagexam/all", 'GET', param);
-
-                        if (data.error) return;
-
-                        var label = "";
-                        for (var index in data) {
-                            var item = data[index];
-                            label = label + item.name + ";\n"
-                        }
-
-                        $('#ec-exam-tag').text(label);
-                    }
-
-                    $('#ec-modal-tag-bind-btn').click(function () {
-                        $('#ec-modal-2').modal("show");
-                    });
-
-                    var columns = [{
-                        checkbox: false
-                    }, {
-                        field: 'id',
-                        title: '题目 ID'
-                    }, {
-                        field: 'content',
-                        title: '题目内容'
-                    }, {
-                        field: 'answer',
-                        title: '参考答案'
-                    },{
-                        field: 'createTime',
-                        title: '创建时间',
-                        formatter:formatterDate
-                    }];
-
-                </script>
-
             </div>
         </div>
     </div>
+
+    <script>
+        function tableDataQuery(param) {
+            return {
+                size: param.limit,
+                page: ((param.offset / param.limit) + 1),
+                creator: thisUserId
+            }
+        }
+
+        function submitModal2() {
+            var data = $('#ec-modal-form-2').serialize();
+
+            var resp = request("/user/api/tagexam/create", "POST", data);
+            if (resp.error) sweetAlert("操作失败", resp.message, "error");
+            else {
+                $('#ec-modal-close').click();
+                swal("操作成功", "操作成功", "success");
+                $('#ec-modal-close-2').click();
+            }
+        }
+
+        function afterFill(id) {
+            var param = {
+                examId: id
+            };
+            var data = request("/user/api/tagexam/all", 'GET', param);
+
+            if (data.error) return;
+
+            var label = "";
+            for (var index in data) {
+                var item = data[index];
+                label = label + item.name + ";\n"
+            }
+
+            $('#ec-exam-tag').text(label);
+        }
+
+        $('#ec-modal-tag-bind-btn').click(function () {
+            $('#ec-modal-2').modal("show");
+        });
+
+        var columns = [{
+            checkbox: false
+        }, {
+            field: 'id',
+            title: '题目 ID'
+        }, {
+            field: 'content',
+            title: '题目内容'
+        }, {
+            field: 'answer',
+            title: '参考答案'
+        }, {
+            field: 'createTime',
+            title: '创建时间',
+            formatter: formatterDate
+        }];
+
+    </script>
 </body>
 </html>

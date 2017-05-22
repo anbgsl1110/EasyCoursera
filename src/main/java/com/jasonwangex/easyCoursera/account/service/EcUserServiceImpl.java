@@ -32,6 +32,10 @@ public class EcUserServiceImpl implements EcUserService {
                 wechatUser.getSex(),
                 userIp, new Date());
 
+        if (ecUser.getAvatar().startsWith("http://")) {
+            ecUser.setAvatar(ecUser.getAvatar().replaceFirst("http://", "https://"));
+        }
+
         ecUserDao.save(ecUser);
 
         return ecUser;

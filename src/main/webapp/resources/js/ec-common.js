@@ -83,7 +83,6 @@ function tableDataOnClickRow(row, element, filed) {
     $('#ec-modal-open').click();
     $('#ec-modal-form').attr("_create", "false").attr("_id", row.id);
     SetWebControls(obj);
-    console.log((typeof afterFill));
     if ((typeof afterFill) != 'undefined') afterFill(row.id, obj);
 }
 
@@ -92,9 +91,9 @@ function SetWebControls(data) {
         for (var key in data) {
 
             if ($(this).attr("name") == key) {
-                if ($(this).attr("type") != "radio") $(this).val(data[key]);
-            }
-            else continue;
+                if ($(this).attr("type") == "text" || $(this).prop("tagName") == 'TEXTAREA')
+                    $(this).val(data[key]);
+            } else continue;
 
             if ($(this).attr("type") == "radio") {
                 if (data[key] == $(this).val()) $(this).prop('checked', 'checked');
