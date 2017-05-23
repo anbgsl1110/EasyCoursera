@@ -28,7 +28,7 @@
                         <option value="1">获取题目</option>
                         <option value="2">获取知识点</option>
                         <option value="3">知识点随机题目</option>
-                        <option value="4">课程</option>
+                        <option value="4">选课</option>
                     </select>
                     <br><br>
 

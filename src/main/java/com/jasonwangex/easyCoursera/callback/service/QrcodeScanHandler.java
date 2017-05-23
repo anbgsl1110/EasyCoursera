@@ -79,10 +79,11 @@ public class QrcodeScanHandler {
             criteria = new ArrayList<>();
             criteria.add(Restrictions.eq("tagId", tagId));
             int total = tagExamDao.count(criteria);
+            if (total == 0) return "该知识点下未绑定任何题目，请联系老师";
 
             int offset = RandomUtils.nextInt(0, total);
 
-            String sql = "SELECT * from ec_tag_exam where tagId=? limit 1 offset ?";
+            String sql = "SELECT * from ec_tag_exam where tag_id=? limit 1 offset ?";
             TagExam tagExam = tagExamDao.getOne(sql, tagId, offset);
 
             answer = answerService.createOrGet(tagExam.getExamId(), user.getId());

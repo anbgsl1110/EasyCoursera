@@ -95,8 +95,7 @@ function fillData(formObj, data) {
             }
 
             if ($(this).hasClass("input-select")) {
-                if (data[key] == $(this).val()) $(this).prop('checked', 'checked');
-                else $(this).removeAttr('checked');
+                $(this).val(data[key]);
                 continue;
             }
 
