@@ -40,7 +40,6 @@ public class WechatCallbackHandleService {
 
     public static Map<Integer, String> CALLBACK_CONTEXT = new ConcurrentHashMap<>();
 
-
     public String handle(EventMessage eventMessage) {
         System.out.println(JsonUtil.toString(eventMessage));
         EcUser user = beforeHandle(eventMessage);
@@ -72,6 +71,7 @@ public class WechatCallbackHandleService {
             msg += "，为帮助老师更好的管理，请先输入您的真实姓名，提交后无法再次修改！";
             CALLBACK_CONTEXT.put(user.getId(), "MODIFY_NAME");
         }
+
         return msg;
     }
 
@@ -88,17 +88,15 @@ public class WechatCallbackHandleService {
         if (context.equals("MODIFY_NAME")) return textMessageHandler.handleForModifyName(userId, content);
         else if (context.startsWith("ANSWER_")) {
             int examId = NumberUtils.toInt(context.replaceFirst("ANSWER_", ""));
-            textMessageHandler.handleForAnswer(userId, examId, content);
+            return textMessageHandler.handleForAnswer(userId, examId, content);
         }
-        return null;
+        return "";
     }
 
 
     private String handleForQrcode(int sceneId, EcUser user) {
         Qrcode qrcode = qrcodeDao.getByField("sceneId", sceneId);
         if (qrcode == null) return "系统繁忙，请稍后再试";
-
-        System.out.println(sceneId);
 
         switch (qrcode.getObjType()) {
             case EcConsts.Qrcode.TYPE_EXAM:
