@@ -27,6 +27,8 @@ public class Answer extends BaseEntity {
     private String content;
     private String reply;
     private boolean judge;
+    private int tagId;
+    private boolean closed;
     private Date createTime;
     private Date modifyTime;
 
@@ -127,5 +129,21 @@ public class Answer extends BaseEntity {
 
     public void setReply(String reply) {
         this.reply = reply;
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 }

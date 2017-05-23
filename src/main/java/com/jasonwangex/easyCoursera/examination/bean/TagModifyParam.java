@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @EcParam(value = "tag", type = EcParamType.MODIFY, role = UserRoleEnum.TEACHER)
 public class TagModifyParam implements ModifyParam{
     private int id;
-    @EcParamForeign(target = Tag.class)
     private int root;
     @NotNull @Length(min = 1, max = 32)
     private String name;

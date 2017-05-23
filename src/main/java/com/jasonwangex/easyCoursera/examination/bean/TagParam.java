@@ -19,7 +19,6 @@ import java.io.Serializable;
 public class TagParam implements Serializable {
     private static final long serialVersionUID = 6091574026489640339L;
 
-    @EcParamForeign(target = Tag.class)
     private int root;
     @NotNull @Length(min = 1, max = 32)
     private String name;

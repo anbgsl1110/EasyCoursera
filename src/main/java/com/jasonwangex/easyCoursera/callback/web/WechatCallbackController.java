@@ -1,8 +1,11 @@
 package com.jasonwangex.easyCoursera.callback.web;
 
+import com.jasonwangex.easyCoursera.callback.service.WechatCallbackHandleService;
+import com.jasonwangex.easyCoursera.common.bean.Wrapper;
 import com.jasonwangex.easyCoursera.common.web.BaseController;
 import com.jasonwangex.easyCoursera.utils.CacheUtil;
 import com.jasonwangex.easyCoursera.utils.JsonUtil;
+import com.jasonwangex.easyCoursera.utils.LockUtil;
 import com.jasonwangex.easyCoursera.utils.WechatUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +19,7 @@ import weixin.popular.support.ExpireKey;
 import weixin.popular.support.expirekey.DefaultExpireKey;
 import weixin.popular.util.XMLConverUtil;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,6 +38,9 @@ import java.util.Map;
 public class WechatCallbackController extends BaseController {
     @Value("${weixin.token}")
     private String token;
+
+    @Resource
+    private WechatCallbackHandleService handler;
 
     private static ExpireKey expireKey = new DefaultExpireKey();
 
@@ -73,18 +80,25 @@ public class WechatCallbackController extends BaseController {
                     + eventMessage.getCreateTime();
 
             CacheUtil.setCache("test", key);
-            if (expireKey.exists(key)) {
-                //重复通知不作处理
-                return null;
-            } else {
-                expireKey.add(key);
-            }
+            Wrapper<Boolean> success = new Wrapper<>();
+            LockUtil.lock("WECHAT_CALLBACK", () -> {
+                if (expireKey.exists(key)) {
+                    //重复通知不作处理
+                    success.set(false);
+                } else {
+                    expireKey.add(key);
+                    success.set(true);
+                }
+            });
+
+            if (!success.get()) return null;
+
 
             //创建回复
             XMLMessage xmlTextMessage = new XMLTextMessage(
                     eventMessage.getFromUserName(),
                     eventMessage.getToUserName(),
-                    "你好");
+                    handler.handle(eventMessage));
             //回复
             xmlTextMessage.outputStreamWrite(outputStream);
             return null;

@@ -150,7 +150,7 @@
 
                 <div class="panel">
                     <div class="panel-heading">
-                        <h3 class="panel-title">消息管理</h3>
+                        <h3 class="panel-title">消息管理</h3> (标黄为未读消息)
                     </div>
                     <div class="panel-body">
                         <table id="ec-teacher-table">

@@ -16,7 +16,10 @@ public class EcConsts {
 
     public static class Qrcode {
         public static final int TYPE_DEFAULT = 0;
-        public static final int TYPE_ANSWER_EXAM = 1;
+        public static final int TYPE_EXAM = 1;
+        public static final int TYPE_TAG = 2;
+        public static final int TYPE_TAG_EXAM = 3;
+        public static final int TYPE_COURSE = 4;
 
     }
 }
