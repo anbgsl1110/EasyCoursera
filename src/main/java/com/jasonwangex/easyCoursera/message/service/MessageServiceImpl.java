@@ -34,7 +34,11 @@ public class MessageServiceImpl implements MessageService {
         message.setContent(content);
         messageDao.save(message);
 
-        new Thread(()-> MessageAPI.messageCustomSend(WechatClient.getAccessToken(), new TextMessage(user.getOpenid(), content))).start();
+        new Thread(()-> {
+            EcUser targetUser = userDao.getById(target);
+            String sendMessage = user.getNickname() + " 向你发送了一条消息：\n\n" + content;
+            MessageAPI.messageCustomSend(WechatClient.getAccessToken(), new TextMessage(targetUser.getOpenid(), sendMessage));
+        }).start();
         return message;
     }
 }
