@@ -7,9 +7,8 @@ package com.jasonwangex.easyCoursera.common.util;
 public class EcConsts {
     public static class Exam {
         public static final int TYPE_DEFAULT = 0;
-        public static final int TYPE_ANSWER_UNIQUE = 1;    // 表示答案唯一的题目
-        public static final int TYPE_COMPLEX_CHOSE = 2;
-        public static final int TYPE_QUESTION = 3;
+        public static final int TYPE_ANSWER_NEED_CHECK = 1;
+        public static final int TYPE_ANSWER_UNIQUE = 2;    // 表示答案唯一的题目
 
         public static final int MAX_ANSWER_COUNT = 3;
     }
