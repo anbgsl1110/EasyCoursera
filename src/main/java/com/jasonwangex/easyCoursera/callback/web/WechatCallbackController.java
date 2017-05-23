@@ -93,7 +93,10 @@ public class WechatCallbackController extends BaseController {
             if (!success.get()) return null;
 
             String handMessage = handler.handle(eventMessage);
-            if (StringUtils.isBlank(handMessage)) return "";
+            if (StringUtils.isBlank(handMessage)) {
+                outputStreamWrite(outputStream, "success");
+                return null;
+            }
 
             //创建回复
             XMLMessage xmlTextMessage = new XMLTextMessage(
@@ -104,7 +107,9 @@ public class WechatCallbackController extends BaseController {
             xmlTextMessage.outputStreamWrite(outputStream);
             return null;
         }
-        return "";
+
+        outputStreamWrite(outputStream, "");
+        return null;
     }
 
     /**
