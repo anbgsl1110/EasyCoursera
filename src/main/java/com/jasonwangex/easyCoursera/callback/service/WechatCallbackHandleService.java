@@ -99,7 +99,7 @@ public class WechatCallbackHandleService {
 
     private String handleForNoContext(int userId, String content) {
         if (content.startsWith("@")) {
-            String[] strs = StringUtils.split(content, " ", 1);
+            String[] strs = StringUtils.split(content, "@| ", 2);
             if (strs.length == 2) {
                 String userName = strs[0];
                 String message = strs[1];
@@ -107,6 +107,7 @@ public class WechatCallbackHandleService {
                 EcUser user = ecUserDao.getByField("nickname", userName);
                 if (user != null) {
                     messageService.send(userId, user.getId(), message, 1);
+                    return "";
                 }
             }
         }
