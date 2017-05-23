@@ -13,19 +13,19 @@
             <div class="modal-body">
                 <form id="ec-modal-form" class="form-inline">
                     <label>学生：</label>
-                    <input class="form-control" name="userName">
+                    <input class="form-control" type="text" name="userName" disabled>
                     <br><br>
 
                     <label>题目：</label>
-                    <textarea class="form-control" name="exam" disabled></textarea>
+                    <textarea class="form-control" name="examination" disabled rows="5" cols="75"></textarea>
                     <br><br>
 
                     <label>回答：</label>
-                    <textarea class="form-control" name="content" disabled></textarea>
+                    <textarea class="form-control" name="content" rows="5" cols="75" disabled></textarea>
                     <br><br>
 
                     <label>批阅意见：</label>
-                    <textarea id="ec-answer-reply" class="form-control" name="reply" placeholder="选填"></textarea>
+                    <textarea id="ec-answer-reply" class="form-control" name="reply" placeholder="选填" rows="5" cols="75"></textarea>
                     <br><br>
                 </form>
             </div>
@@ -50,6 +50,22 @@
         }
     }
 
+    function customTableDataOnClickRow(row, element, filed) {
+        $('#ec-modal').modal('show');
+        var data = getOne("/user/api/answer/get/" + row.id, "GET");
+
+        data.examination = data.examination.content;
+
+        var obj = $('#ec-modal-form').attr("_create", "false").attr("_id", data.id);
+        fillData(obj, data);
+    }
+
+    function formatExamination(data) {
+        if (data.length > 32) return data.substr(0, 32) + "...";
+
+        return data;
+    }
+
     var columns = [{
         field: 'id',
         visible: false
@@ -57,8 +73,9 @@
         field: 'userName',
         title: '学生姓名'
     }, {
-        field: 'examination',
-        title: '题目内容'
+        field: 'examination.content',
+        title: '题目内容',
+        formatter: formatExamination
     }, {
         field: 'content',
         title: '回答内容'

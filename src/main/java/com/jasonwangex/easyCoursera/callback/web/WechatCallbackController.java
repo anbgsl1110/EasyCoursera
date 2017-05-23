@@ -63,14 +63,6 @@ public class WechatCallbackController extends BaseController {
         if (!signature.toLowerCase().equals(WechatUtil.sign(params))) return null;
 
         InputStream inputStream = request.getInputStream();
-
-
-//        StringWriter stringWriter = new StringWriter();
-//        IOUtils.copy(request.getInputStream(), stringWriter, "UTF-8");
-//        System.out.println("stringWriter: ========== " + stringWriter.toString());
-
-
-
         OutputStream outputStream = response.getOutputStream();
 
         if (StringUtils.isNotBlank(echostr)) {
@@ -100,11 +92,14 @@ public class WechatCallbackController extends BaseController {
 
             if (!success.get()) return null;
 
+            String handMessage = handler.handle(eventMessage);
+            if (StringUtils.isBlank(handMessage)) return "";
+
             //创建回复
             XMLMessage xmlTextMessage = new XMLTextMessage(
                     eventMessage.getFromUserName(),
                     eventMessage.getToUserName(),
-                    handler.handle(eventMessage));
+                    handMessage);
             //回复
             xmlTextMessage.outputStreamWrite(outputStream);
             return null;

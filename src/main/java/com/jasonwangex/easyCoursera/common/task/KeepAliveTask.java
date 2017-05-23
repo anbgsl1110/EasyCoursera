@@ -20,6 +20,7 @@ public class KeepAliveTask {
     @Scheduled(initialDelay = 2000L, fixedDelay = 10000L)
     public void keepAlive(){
         try {
+            if (true) return;
             EcUser user = ecUserDao.getOne(Collections.emptyList(), null);
         } catch (Exception ignore) {
 

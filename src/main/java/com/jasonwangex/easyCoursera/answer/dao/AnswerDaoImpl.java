@@ -6,7 +6,10 @@ import com.jasonwangex.easyCoursera.common.dao.BaseDaoImpl;
 import com.jasonwangex.easyCoursera.answer.domain.Answer;
 import com.jasonwangex.easyCoursera.common.util.EcConsts;
 import com.jasonwangex.easyCoursera.utils.LockUtil;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -45,8 +48,31 @@ public class AnswerDaoImpl extends BaseDaoImpl<Answer> implements AnswerDao {
 
     @Override
     public PageBean<Answer> getPage(int teacherId, int page, int size) {
-        List<Criterion> criteria = new ArrayList<>();
 
-        return getPage(criteria, null, page, size);
+        Number total = (Number) getHibernateTemplate().execute((session) -> {
+            Criteria sessionCriteria = session.createCriteria(Answer.class, "answer");
+            sessionCriteria.createAlias("answer.examination", "examination");
+            sessionCriteria.add(Restrictions.eq("closed", false));
+            sessionCriteria.add(Restrictions.eq("examination.type", EcConsts.Exam.TYPE_ANSWER_NEED_CHECK));
+
+            return sessionCriteria.setProjection(Projections.rowCount()).uniqueResult();
+        });
+
+        PageBean<Answer> pageBean = new PageBean<>(page, size, total.intValue());
+
+        List<Answer> items = getHibernateTemplate().execute((session) -> {
+            Criteria sessionCriteria = session.createCriteria(Answer.class, "answer");
+            sessionCriteria.createAlias("answer.examination", "examination");
+            sessionCriteria.add(Restrictions.eq("closed", false));
+            sessionCriteria.add(Restrictions.eq("examination.type", EcConsts.Exam.TYPE_ANSWER_NEED_CHECK));
+
+            sessionCriteria.setMaxResults(pageBean.getSize());
+            sessionCriteria.setFirstResult(pageBean.getOffset());
+            return sessionCriteria.list();
+        });
+
+        pageBean.setItems(items);
+        return pageBean;
     }
+
 }

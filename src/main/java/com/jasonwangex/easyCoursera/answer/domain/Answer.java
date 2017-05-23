@@ -2,7 +2,10 @@ package com.jasonwangex.easyCoursera.answer.domain;
 
 import com.jasonwangex.easyCoursera.common.annotation.EcDomain;
 import com.jasonwangex.easyCoursera.common.domain.BaseEntity;
+import com.jasonwangex.easyCoursera.examination.domain.Examination;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,10 +35,13 @@ public class Answer extends BaseEntity {
     private Date createTime;
     private Date modifyTime;
 
+    @ManyToOne
+    @JoinColumn(name = "examId", insertable = false, updatable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private Examination examination;
+
     @Transient
     private String userName;
-    @Transient
-    private String examination;
 
     public String getUserName() {
         return userName;
@@ -43,14 +49,6 @@ public class Answer extends BaseEntity {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getExamination() {
-        return examination;
-    }
-
-    public void setExamination(String examination) {
-        this.examination = examination;
     }
 
     @Override
@@ -145,5 +143,13 @@ public class Answer extends BaseEntity {
 
     public void setClosed(boolean closed) {
         this.closed = closed;
+    }
+
+    public Examination getExamination() {
+        return examination;
+    }
+
+    public void setExamination(Examination examination) {
+        this.examination = examination;
     }
 }
