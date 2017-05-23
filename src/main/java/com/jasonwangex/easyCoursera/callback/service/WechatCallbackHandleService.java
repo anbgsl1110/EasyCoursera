@@ -37,7 +37,6 @@ public class WechatCallbackHandleService {
         System.out.println("handle qrcode " + eventMessage.getEvent() + "---" + eventMessage.getEventKey());
         EcUser user = beforeHandle(eventMessage);
 
-        System.out.println(user.getNickname());
         String event = eventMessage.getEvent();
         if (event.equalsIgnoreCase("subscribe")) {
             if (eventMessage.getEventKey().startsWith("qrscene_")) {
@@ -52,7 +51,7 @@ public class WechatCallbackHandleService {
 
 
     private String handleForQrcode(int sceneId, EcUser user) {
-        Qrcode qrcode = qrcodeDao.getByField("scene_id", sceneId);
+        Qrcode qrcode = qrcodeDao.getByField("sceneId", sceneId);
         if (qrcode == null) return "系统繁忙，请稍后再试";
 
         System.out.println(sceneId);
