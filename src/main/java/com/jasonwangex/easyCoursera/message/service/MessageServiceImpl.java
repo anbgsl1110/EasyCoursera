@@ -4,7 +4,10 @@ import com.jasonwangex.easyCoursera.account.dao.EcUserDao;
 import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.message.dao.MessageDao;
 import com.jasonwangex.easyCoursera.message.domain.Message;
+import com.jasonwangex.easyCoursera.wechat.bean.WechatClient;
 import org.springframework.stereotype.Service;
+import weixin.popular.api.MessageAPI;
+import weixin.popular.bean.message.message.TextMessage;
 
 import javax.annotation.Resource;
 
@@ -31,6 +34,7 @@ public class MessageServiceImpl implements MessageService {
         message.setContent(content);
         messageDao.save(message);
 
+        new Thread(()-> MessageAPI.messageCustomSend(WechatClient.getAccessToken(), new TextMessage(user.getOpenid(), content))).start();
         return message;
     }
 }

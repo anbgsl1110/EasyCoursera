@@ -6,11 +6,13 @@ import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.account.service.EcUserService;
 import com.jasonwangex.easyCoursera.common.bean.Wrapper;
 import com.jasonwangex.easyCoursera.common.util.EcConsts;
+import com.jasonwangex.easyCoursera.message.service.MessageService;
 import com.jasonwangex.easyCoursera.qrcode.dao.QrcodeDao;
 import com.jasonwangex.easyCoursera.qrcode.domain.Qrcode;
 import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import com.jasonwangex.easyCoursera.utils.LockUtil;
 import com.jasonwangex.easyCoursera.wechat.bean.WechatClient;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import weixin.popular.api.UserAPI;
@@ -31,6 +33,8 @@ public class WechatCallbackHandleService {
     private EcUserService ecUserService;
     @Resource
     private QrcodeDao qrcodeDao;
+    @Resource
+    private MessageService messageService;
     @Resource
     private QrcodeScanHandler qrcodeScanHandler;
     @Resource
@@ -81,7 +85,9 @@ public class WechatCallbackHandleService {
         });
 
         String context = stringWrapper.get();
-        if (context == null) return "你的反馈我们已收到，感谢~比心~";
+        if (context == null){
+            return handleForNoContext(userId, content);
+        }
 
         if (context.equals("MODIFY_NAME")) return textMessageHandler.handleForModifyName(userId, content);
         else if (context.startsWith("ANSWER_")) {
@@ -89,6 +95,23 @@ public class WechatCallbackHandleService {
             return textMessageHandler.handleForAnswer(userId, examId, content);
         }
         return "";
+    }
+
+    private String handleForNoContext(int userId, String content) {
+        if (content.startsWith("@")) {
+            String[] strs = StringUtils.split(content, " ", 1);
+            if (strs.length == 2) {
+                String userName = strs[0];
+                String message = strs[1];
+
+                EcUser user = ecUserDao.getByField("nickname", userName);
+                if (user != null) {
+                    messageService.send(userId, user.getId(), message, 1);
+                }
+            }
+        }
+
+        return "你的反馈我们已收到，感谢~比心~";
     }
 
 

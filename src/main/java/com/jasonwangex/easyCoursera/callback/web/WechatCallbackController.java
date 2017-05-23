@@ -93,7 +93,6 @@ public class WechatCallbackController extends BaseController {
 
             if (!success.get()) return null;
 
-
             //创建回复
             XMLMessage xmlTextMessage = new XMLTextMessage(
                     eventMessage.getFromUserName(),
