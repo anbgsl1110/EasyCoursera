@@ -8,6 +8,7 @@ import com.jasonwangex.easyCoursera.common.bean.Wrapper;
 import com.jasonwangex.easyCoursera.common.util.EcConsts;
 import com.jasonwangex.easyCoursera.qrcode.dao.QrcodeDao;
 import com.jasonwangex.easyCoursera.qrcode.domain.Qrcode;
+import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import com.jasonwangex.easyCoursera.utils.LockUtil;
 import com.jasonwangex.easyCoursera.wechat.bean.WechatClient;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -41,7 +42,7 @@ public class WechatCallbackHandleService {
 
 
     public String handle(EventMessage eventMessage) {
-        System.out.println("handle qrcode " + eventMessage.getEvent() + "---" + eventMessage.getEventKey());
+        System.out.println(JsonUtil.toString(eventMessage));
         EcUser user = beforeHandle(eventMessage);
 
         String event = eventMessage.getEvent();
