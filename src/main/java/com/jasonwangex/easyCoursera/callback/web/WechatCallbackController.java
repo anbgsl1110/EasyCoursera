@@ -7,9 +7,11 @@ import com.jasonwangex.easyCoursera.utils.CacheUtil;
 import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import com.jasonwangex.easyCoursera.utils.LockUtil;
 import com.jasonwangex.easyCoursera.utils.WechatUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import weixin.popular.bean.message.EventMessage;
@@ -22,10 +24,7 @@ import weixin.popular.util.XMLConverUtil;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +46,7 @@ public class WechatCallbackController extends BaseController {
     @RequestMapping(value = "")
     public String check(HttpServletRequest request,
                         HttpServletResponse response,
+                        @RequestBody String body,
                         @RequestParam(value = "signature", defaultValue = "") String signature,
                         @RequestParam(value = "timestamp", defaultValue = "0") long timestamp,
                         @RequestParam(value = "nonce", defaultValue = "") String nonce,
@@ -64,6 +64,14 @@ public class WechatCallbackController extends BaseController {
         if (!signature.toLowerCase().equals(WechatUtil.sign(params))) return null;
 
         InputStream inputStream = request.getInputStream();
+
+
+        StringWriter stringWriter = new StringWriter();
+        IOUtils.copy(request.getInputStream(), stringWriter, "UTF-8");
+        System.out.println("stringWriter: ========== " + stringWriter.toString());
+        System.out.println("body: ========== " + body);
+
+
         OutputStream outputStream = response.getOutputStream();
 
         if (StringUtils.isNotBlank(echostr)) {
