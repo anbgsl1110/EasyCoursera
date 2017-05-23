@@ -53,8 +53,9 @@ public class QrcodeScanHandler {
         if (examination == null) return "题目已不存在，请联系老师";
 
         Answer answer = answerService.createOrGet(examId, user.getId());
-        if (answer.getAnswerCount() >= 3) return "已超过答题次数";
+        if (answer.isClosed() || answer.getAnswerCount() >= 3) return "回答已批阅或已超过答题次数";
 
+        WechatCallbackHandleService.CALLBACK_CONTEXT.put(user.getId(), "ANSWER_" + examId);
         return "题目如下：\n\n" + examination.getContent();
     }
 

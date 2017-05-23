@@ -78,7 +78,7 @@ public class WechatCallbackHandleService {
         Wrapper<String> stringWrapper = new Wrapper<>();
         LockUtil.lock("WECHAT_CALLBACK_TEXT_MESSAGE_CONTEXT", () -> {
             stringWrapper.set(CALLBACK_CONTEXT.get(userId));
-            WechatCallbackHandleService.CALLBACK_CONTEXT.put(userId, null);
+            WechatCallbackHandleService.CALLBACK_CONTEXT.remove(userId);
         });
 
         String context = stringWrapper.get();
