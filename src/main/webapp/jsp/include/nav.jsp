@@ -50,11 +50,11 @@
             if (val) window.location.href = "/search?keyword=" + encodeURIComponent(val);
         });
 
-        $(function () {
-            setInterval(function () {
-                refreshProfile();
-            }, 2000);
-        });
+//        $(function () {
+//            setInterval(function () {
+//                refreshProfile();
+//            }, 2000);
+//        });
     </script>
 </nav>
 

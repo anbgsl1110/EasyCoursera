@@ -156,6 +156,7 @@
         if (data == 1) return '获取题目';
         if (data == 2) return '获取知识点';
         if (data == 3) return '知识点随机题目';
+        if (data == 4) return '选课';
     }
 
     function customRowStyleFunc(row, index) {

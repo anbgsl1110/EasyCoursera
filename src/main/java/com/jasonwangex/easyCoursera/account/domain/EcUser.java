@@ -39,6 +39,7 @@ public class EcUser extends BaseEntity {
     private String roleIds;
     private boolean subscribe;
     private Date subscribeTime;
+    private boolean nameModified;
 
     @Column(updatable = false)
     private Date createTime;
@@ -226,5 +227,13 @@ public class EcUser extends BaseEntity {
 
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
+    }
+
+    public boolean isNameModified() {
+        return nameModified;
+    }
+
+    public void setNameModified(boolean nameModified) {
+        this.nameModified = nameModified;
     }
 }

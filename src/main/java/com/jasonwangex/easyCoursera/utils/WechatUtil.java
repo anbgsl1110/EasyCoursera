@@ -2,6 +2,7 @@ package com.jasonwangex.easyCoursera.utils;
 
 import com.jasonwangex.easyCoursera.wechat.bean.WechatClient;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +45,7 @@ public class WechatUtil {
     }
 
     @SuppressWarnings("deprecation")
+    private static int counter = 0;
     public static void refreshAccessToken() {
         Map<String, Object> params = new HashMap<>();
 
@@ -56,7 +58,14 @@ public class WechatUtil {
         Map response = JsonUtil.toObject(Map.class, responseStr);
 
         if (response != null && response.containsKey("access_token")) {
-            WechatClient.setAccessToken((String) response.get("access_token"));
+            String accessToken = (String) response.get("access_token");
+            if (StringUtils.isBlank(accessToken) && accessToken.length() < 8) {
+                if (++counter <= 3) refreshAccessToken();
+            } else {
+                counter = 0;
+                WechatClient.setAccessToken(accessToken);
+            }
+
         }
     }
 
