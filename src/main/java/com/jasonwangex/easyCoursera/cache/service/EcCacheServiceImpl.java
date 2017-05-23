@@ -63,10 +63,7 @@ public class EcCacheServiceImpl implements EcCacheService {
     public void deleteCache(String key) {
         if (StringUtils.isBlank(key)) return;
 
-        List<Criterion> criteria = new ArrayList<>();
-        criteria.add(Restrictions.eq("keyStr", key));
-
-        ecCacheDao.delete(criteria);
+        ecCacheDao.delete("DELETE FROM ec_cache where key_str=?", key);
     }
 
 
