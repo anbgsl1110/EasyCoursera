@@ -4,7 +4,6 @@ import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.answer.dao.AnswerDao;
 import com.jasonwangex.easyCoursera.answer.domain.Answer;
 import com.jasonwangex.easyCoursera.answer.service.AnswerService;
-import com.jasonwangex.easyCoursera.course.dao.CourseChooseDao;
 import com.jasonwangex.easyCoursera.course.dao.CourseDao;
 import com.jasonwangex.easyCoursera.course.domain.Course;
 import com.jasonwangex.easyCoursera.course.domain.CourseChoose;
@@ -45,6 +44,8 @@ public class QrcodeScanHandler {
     private CourseDao courseDao;
     @Resource
     private CourseChooseService courseChooseService;
+    @Resource
+    private CallbackContextHelper contextHelper;
 
     public String handleForExam(Qrcode qrcode, EcUser user) {
         int examId = qrcode.getObjId();
@@ -55,7 +56,7 @@ public class QrcodeScanHandler {
         Answer answer = answerService.createOrGet(examId, user.getId());
         if (answer.isClosed() || answer.getAnswerCount() >= 3) return "回答已批阅或已超过答题次数";
 
-        WechatCallbackHandleService.CALLBACK_CONTEXT.put(user.getId(), "ANSWER_" + examId);
+        contextHelper.put(user.getId(), "ANSWER_" + examId);
         return "题目如下：\n\n" + examination.getContent();
     }
 

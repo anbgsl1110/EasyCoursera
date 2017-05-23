@@ -35,6 +35,10 @@ public class CacheUtil {
         return rtn;
     }
 
+    public static void clear(String key) {
+        cacheService.deleteCache(key);
+    }
+
     @Resource
     public void setCacheService(EcCacheService cacheService) {
         CacheUtil.cacheService = cacheService;

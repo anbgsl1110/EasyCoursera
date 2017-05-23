@@ -18,8 +18,6 @@ import weixin.popular.bean.message.EventMessage;
 import weixin.popular.bean.user.User;
 
 import javax.annotation.Resource;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wangjz
@@ -37,8 +35,8 @@ public class WechatCallbackHandleService {
     private QrcodeScanHandler qrcodeScanHandler;
     @Resource
     private TextMessageHandler textMessageHandler;
-
-    public static Map<Integer, String> CALLBACK_CONTEXT = new ConcurrentHashMap<>();
+    @Resource
+    private CallbackContextHelper contextHelper;
 
     public String handle(EventMessage eventMessage) {
         System.out.println(JsonUtil.toString(eventMessage));
@@ -69,7 +67,7 @@ public class WechatCallbackHandleService {
         String msg = "欢迎关注【简课】";
         if (!user.isNameModified()) {
             msg += "，为帮助老师更好的管理，请先输入您的真实姓名，提交后无法再次修改！";
-            CALLBACK_CONTEXT.put(user.getId(), "MODIFY_NAME");
+            contextHelper.put(user.getId(), "MODIFY_NAME");
         }
 
         return msg;
@@ -78,8 +76,8 @@ public class WechatCallbackHandleService {
     private String handleForText(String content, int userId) {
         Wrapper<String> stringWrapper = new Wrapper<>();
         LockUtil.lock("WECHAT_CALLBACK_TEXT_MESSAGE_CONTEXT", () -> {
-            stringWrapper.set(CALLBACK_CONTEXT.get(userId));
-            WechatCallbackHandleService.CALLBACK_CONTEXT.remove(userId);
+            stringWrapper.set(contextHelper.get(userId));
+            contextHelper.remove(userId);
         });
 
         String context = stringWrapper.get();

@@ -1,7 +1,6 @@
 package com.jasonwangex.easyCoursera.callback.service;
 
 import com.jasonwangex.easyCoursera.account.dao.EcUserDao;
-import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.answer.dao.AnswerDao;
 import com.jasonwangex.easyCoursera.answer.domain.Answer;
 import com.jasonwangex.easyCoursera.answer.service.AnswerService;
@@ -26,6 +25,8 @@ public class TextMessageHandler {
     private AnswerDao answerDao;
     @Resource
     private EcUserDao ecUserDao;
+    @Resource
+    private CallbackContextHelper contextHelper;
 
     public String handleForModifyName(int userId, String content) {
         ecUserDao.updateField("nickname", content, userId);
@@ -50,14 +51,14 @@ public class TextMessageHandler {
                 if (content.equalsIgnoreCase(examination.getAnswer())) return closeAnswer(answer, true);
                 else {
                     if (answer.getAnswerCount() >= 3) closeAnswer(answer, false);
-                    WechatCallbackHandleService.CALLBACK_CONTEXT.put(userId, "ANSWER_" + examId);
+                    contextHelper.put(userId, "ANSWER_" + examId);
                     return "回答错误，你还有" + (3 - answer.getAnswerCount()) + "次回答机会";
                 }
             } else {
                 // 主观题
                 if (answer.getAnswerCount() >= 3) return "回答错误，问题修改次数已耗尽";
 
-                WechatCallbackHandleService.CALLBACK_CONTEXT.put(userId, "ANSWER_" + examId);
+                contextHelper.put(userId, "ANSWER_" + examId);
                 return "回答已提交，等待教师审核。\n你还有" + (3 - answer.getAnswerCount()) + "次回答机会";
             }
         }
