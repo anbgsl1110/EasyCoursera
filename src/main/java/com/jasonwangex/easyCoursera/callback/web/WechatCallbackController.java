@@ -46,7 +46,6 @@ public class WechatCallbackController extends BaseController {
     @RequestMapping(value = "")
     public String check(HttpServletRequest request,
                         HttpServletResponse response,
-                        @RequestBody String body,
                         @RequestParam(value = "signature", defaultValue = "") String signature,
                         @RequestParam(value = "timestamp", defaultValue = "0") long timestamp,
                         @RequestParam(value = "nonce", defaultValue = "") String nonce,
@@ -66,10 +65,10 @@ public class WechatCallbackController extends BaseController {
         InputStream inputStream = request.getInputStream();
 
 
-        StringWriter stringWriter = new StringWriter();
-        IOUtils.copy(request.getInputStream(), stringWriter, "UTF-8");
-        System.out.println("stringWriter: ========== " + stringWriter.toString());
-        System.out.println("body: ========== " + body);
+//        StringWriter stringWriter = new StringWriter();
+//        IOUtils.copy(request.getInputStream(), stringWriter, "UTF-8");
+//        System.out.println("stringWriter: ========== " + stringWriter.toString());
+
 
 
         OutputStream outputStream = response.getOutputStream();
