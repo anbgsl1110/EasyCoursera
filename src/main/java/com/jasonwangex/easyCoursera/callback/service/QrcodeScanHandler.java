@@ -53,7 +53,7 @@ public class QrcodeScanHandler {
         Examination examination = examinationDao.getById(examId);
         if (examination == null) return "题目已不存在，请联系老师";
 
-        Answer answer = answerService.createOrGet(examId, user.getId());
+        Answer answer = answerService.createOrGet(examId, user.getId(), 0);
         if (answer.isClosed() || answer.getAnswerCount() >= 3) return "回答已批阅或已超过答题次数";
 
         contextHelper.put(user.getId(), "ANSWER_" + examId);
@@ -88,9 +88,10 @@ public class QrcodeScanHandler {
             String sql = "SELECT * from ec_tag_exam where tag_id=? limit 1 offset ?";
             TagExam tagExam = tagExamDao.getOne(sql, tagId, offset);
 
-            answer = answerService.createOrGet(tagExam.getExamId(), user.getId());
+            answer = answerService.createOrGet(tagExam.getExamId(), user.getId(), tagId);
         }
 
+        contextHelper.put(user.getId(), "ANSWER_" + answer.getExamId());
         Examination examination = examinationDao.getById(answer.getExamId());
         if (examination == null) return "题目已不存在，请联系老师";
 

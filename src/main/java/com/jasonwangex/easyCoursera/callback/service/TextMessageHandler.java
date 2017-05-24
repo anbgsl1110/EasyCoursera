@@ -40,7 +40,7 @@ public class TextMessageHandler {
             return "题目不存在或已被删除，请联系老师";
         }
 
-        Answer answer = answerService.createOrGet(examId, userId);
+        Answer answer = answerService.createOrGet(examId, userId, 0);
         if (!answer.isClosed() && answer.getAnswerCount() <= 2) {
             answer.setContent(content);
             answer.setAnswerCount(answer.getAnswerCount() + 1);

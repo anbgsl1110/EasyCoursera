@@ -8,7 +8,7 @@ import com.jasonwangex.easyCoursera.answer.domain.Answer;
  */
 public interface AnswerService {
 
-    Answer createOrGet(int examId, int userId);
+    Answer createOrGet(int examId, int userId, int tagId);
 
     Answer reply(int answerId, String reply, boolean judge);
 }

@@ -32,7 +32,7 @@ public class AnswerServiceImpl implements AnswerService {
     private ExaminationDao examinationDao;
 
     @Override
-    public Answer createOrGet(int examId, int userId) {
+    public Answer createOrGet(int examId, int userId, int tagId) {
         List<Criterion> criteria = new ArrayList<>();
 
         criteria.add(Restrictions.eq("examId", examId));

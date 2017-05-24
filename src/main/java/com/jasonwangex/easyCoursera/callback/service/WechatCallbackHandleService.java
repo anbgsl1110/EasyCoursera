@@ -85,7 +85,7 @@ public class WechatCallbackHandleService {
         });
 
         String context = stringWrapper.get();
-        if (context == null){
+        if (context == null) {
             return handleForNoContext(userId, content);
         }
 
