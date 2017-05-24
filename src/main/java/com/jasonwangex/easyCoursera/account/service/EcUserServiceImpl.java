@@ -4,6 +4,7 @@ import com.jasonwangex.easyCoursera.account.dao.EcUserDao;
 import com.jasonwangex.easyCoursera.account.domain.EcUser;
 import com.jasonwangex.easyCoursera.common.bean.Wrapper;
 import com.jasonwangex.easyCoursera.message.dao.MessageDao;
+import com.jasonwangex.easyCoursera.utils.JsonUtil;
 import com.jasonwangex.easyCoursera.utils.LockUtil;
 import org.springframework.stereotype.Service;
 import weixin.popular.bean.user.User;
@@ -23,6 +24,7 @@ public class EcUserServiceImpl implements EcUserService {
     @Override
     public EcUser create(User wechatUser, boolean login, String userIp) {
         if (wechatUser == null) return null;
+        System.out.println(JsonUtil.toString(wechatUser));
 
         EcUser ecUser = ecUserDao.getByOpenId(wechatUser.getOpenid());
         if (ecUser != null) return ecUser;
