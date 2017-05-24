@@ -35,6 +35,7 @@ function tableDataSerialize(resp) {
     for (var index in items) {
         var item = items[index];
         for (var filed in item) {
+            if (item[filed] == null) continue;
             if (item[filed].length > 32) item[filed] = item[filed].substr(0, 32) + "..."
         }
     }
