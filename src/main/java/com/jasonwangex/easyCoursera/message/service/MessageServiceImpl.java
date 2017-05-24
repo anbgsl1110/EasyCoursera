@@ -24,8 +24,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message send(int userId, int target, String content, int type) {
-        EcUser user = userDao.getById(target);
-        if (user == null) return null;
+        EcUser targetUser = userDao.getById(target);
+        if (targetUser == null) return null;
 
         Message message = new Message();
         message.setCreator(userId);
@@ -35,8 +35,8 @@ public class MessageServiceImpl implements MessageService {
         messageDao.save(message);
 
         new Thread(()-> {
-            EcUser targetUser = userDao.getById(target);
-            String sendMessage = targetUser.getNickname() + " 向你发送了一条消息：\n\n" + content;
+            EcUser user = userDao.getById(userId);
+            String sendMessage = user.getNickname() + " 向你发送了一条消息：\n\n" + content;
             MessageAPI.messageCustomSend(WechatClient.getAccessToken(), new TextMessage(targetUser.getOpenid(), sendMessage));
         }).start();
         return message;
